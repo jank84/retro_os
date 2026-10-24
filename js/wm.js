@@ -461,6 +461,9 @@ const WM = (() => {
       wmplayer: 'wmp', winver: 'winver', taskmgr: 'taskmgr', control: 'control',
       'appwiz.cpl': 'control', 'desk.cpl': 'display', timedate: 'timedate',
       msnmsgr: 'msn', msnmessenger: 'msn', icq: 'icq', icqpro: 'icq',
+      steam: 'steam', cstrike: 'cs', cs: 'cs', halflife: 'cs', 'hl.exe': 'cs', hl: 'cs',
+      starcraft: 'starcraft', sc: 'starcraft', broodwar: 'starcraft', battleline: 'starcraft',
+      ta: 'ta', 'total-annihilation': 'ta', cnc: 'cnc', conquer: 'cnc', 'c&c': 'cnc',
       'logoff': '__logoff', 'chkdsk': '__chkdsk', 'format': '__format', 'fdisk': '__fdisk'
     };
     if (cmd === 'shutdown') {

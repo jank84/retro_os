@@ -531,7 +531,7 @@ const Shell = {
       const mkB = (label, fn, icon) => { const b = el('button', 'tbr-btn'); if (icon) { const im = el('img'); im.src = icon; b.append(im); } else b.textContent = label; if (fn) b.addEventListener('click', fn); t1.append(b); return b; };
       const back = mkB('◀ Back'), fwd = mkB('Forward ▶'), stop = mkB('✕ Stop'), refr = mkB('↻ Refresh'), homeB = mkB('🏠 Home');
       t1.append(el('div', 'tbr-sep'));
-      mkB('🔍 Search', () => go('http://www.google.com')); mkB('⭐ Favorites', () => WM.msg('Favorites', 'MSN.com\nMySpace - jess88\nGoogle\nHamsterDance.com (broken)', { type: 'info' })); mkB('🕓 History', () => WM.msg('History', todayHistory.join('\n') || 'You have no history.', { type: 'info' }));
+      mkB('🔍 Search', () => go('http://www.google.com')); mkB('⭐ Favorites', () => WM.msg('Favorites', 'MSN.com\nMySpace - jess88\nGoogle\nYouTube (beta)\nWikipedia\nGeoCities - SiliconValley/8821\nHamsterDance.com (broken)', { type: 'info' })); mkB('🕓 History', () => WM.msg('History', todayHistory.join('\n') || 'You have no history.', { type: 'info' }));
       const t2 = el('div', 'xp-toolbar');
       t2.innerHTML = '<span style="color:#444;">Address</span>';
       const addr = el('div', 'tbr-combo'); addr.style.flex = '1';
@@ -577,7 +577,7 @@ const Shell = {
         pageWrap.innerHTML = '<div style="padding:40px;color:#555;font-family:Verdana;font-size:11px;">Loading...</div>';
         setTimeout(() => {
           const key = u.replace(/^http(s)?:\/\/(www\.)?/, '').replace(/\/$/, '') || 'msn.com';
-          const site = SITES[key] || SITES[key + '/'] || SITES[u];
+          const site = SITES[key] || SITES[key + '/'] || SITES[u] || SITES[key.replace(/\?.*$/, '')];
           if (site) {
             render(site);
             if (!noHist) { hist = hist.slice(0, hIdx + 1); hist.push(u); hIdx = hist.length - 1; todayHistory.push(u); }
@@ -596,11 +596,12 @@ const Shell = {
         win.setTitle(site.title + ' - Microsoft Internet Explorer');
         pg.querySelectorAll('[data-go]').forEach(a => a.style.cursor = 'pointer');
         pg.addEventListener('click', e => { const t = e.target.closest('[data-go]'); if (t) { e.preventDefault(); go(t.getAttribute('data-go')); } });
-        pg.querySelectorAll('form').forEach(f => f.addEventListener('submit', e => {
+        if (site.after) site.after(pg);
+        pg.querySelectorAll('form').forEach(f => { if (f.hasAttribute('data-custom')) return; f.addEventListener('submit', e => {
           e.preventDefault();
           const q = f.querySelector('input').value;
           go('http://www.google.com/search?q=' + encodeURIComponent(q || 'windows xp'));
-        }));
+        }); });
       }
       function notFound(u) {
         pageWrap.innerHTML = `
@@ -665,8 +666,10 @@ const Shell = {
                   <li><b>Windows XP SP2 rolls out worldwide</b> — "security revolution" says Redmond</li>
                   <li><b>MySpace passes 10 million profiles</b> — teens can't stop top-8-ing</li>
                   <li><b>Doom 3 ships</b> — GPUs weep, gamers rejoice</li>
+                  <li><b>Steam beta rolls out</b> — "just 12 minutes to install, relax" says Valve <span data-go="http://store.steampowered.com" style="color:#06c;">(huh?)</span></li>
+                  <li>New on <b>YouTube (beta)</b>: <span data-go="http://www.youtube.com" style="color:#06c;cursor:pointer;">Evolution of Dance</span> — everyone is dancing</li>
                   <li><b>Nokia 3310 still alive</b>, survives pocket-dive into pool</li>
-                  <li>Ringtone of the year: <i>Hamster Dance</i> (polyphonic)</li>
+                  <li>Ringtone of the year: <i>Hamster Dance</i> (polyphonic) — <span data-go="http://www.geocities.com/Heartland/4211" style="color:#06c;cursor:pointer;">see original</span></li>
                 </ul>
                 <h3 style="color:#0a499f;font-size:15px;margin-top:18px;">Entertainment</h3>
                 <ul style="margin:6px 0 0 18px;line-height:2;">
@@ -721,7 +724,22 @@ const Shell = {
                 <div>"here for friends &amp; sk8r boys. NOT creeps!! &lt;3" — 14 y/o, usa, girl</div>
               </div>
               <div style="margin-bottom:18px;">
-                <a data-go="http://www.google.com/search?q=hamster+dance" style="color:#00c;font-size:14px;text-decoration:underline;cursor:pointer;">The Hamster Dance</a>
+                <a data-go="http://www.youtube.com/watch?v=dance" style="color:#00c;font-size:14px;text-decoration:underline;cursor:pointer;">YouTube - Broadcast Yourself. - Evolution of Dance</a>
+                <div style="color:#008000;">www.youtube.com/watch?v=dance</div>
+                <div>my like, since 1958, 187 million views... watch the internet's favorite dancing man.</div>
+              </div>
+              <div style="margin-bottom:18px;">
+                <a data-go="http://www.wikipedia.org/wiki/Windows_XP" style="color:#00c;font-size:14px;text-decoration:underline;cursor:pointer;">Wikipedia, the free encyclopedia - Windows XP</a>
+                <div style="color:#008000;">www.wikipedia.org/wiki/Windows_XP</div>
+                <div>Windows XP is a major release of Microsoft's Windows NT operating system. WikiWikiUse!</div>
+              </div>
+              <div style="margin-bottom:18px;">
+                <a data-go="http://www.geocities.com" style="color:#0000ee;font-size:14px;text-decoration:underline;cursor:pointer;">GeoCities - Free Homepages, Free Email, Free Community</a>
+                <div style="color:#008000;">www.geocities.com/</div>
+                <div>38 million homepages in 40 neighborhoods. Find your neighbors. Bring snacks.</div>
+              </div>
+              <div style="margin-bottom:18px;">
+                <a data-go="http://www.geocities.com/Heartland/4211" style="color:#00c;font-size:14px;text-decoration:underline;cursor:pointer;">The Hamster Dance</a>
                 <div style="color:#008000;">www.hamsterdance.com/</div>
                 <div>oh ai ai ai ai ai hamsterster oh no no no...</div>
               </div>
@@ -730,7 +748,7 @@ const Shell = {
                 <div style="color:#008000;">messenger.msn.com</div>
                 <div>Custom emoticons, nudges, and buddy lists await. You have messages.</div>
               </div>
-              <div style="color:#777;">Results <b>1 - 4</b> of about <b>30,400,000</b>. (0.18 seconds)</div>
+              <div style="color:#777;">Results <b>1 - 7</b> of about <b>30,400,000</b>. (0.18 seconds)</div>
             </div>
           </div>` };
         S['myspace.com'] = { title: "MySpace.com - The Networking Socially Distancing Community", html: `
@@ -783,6 +801,227 @@ const Shell = {
             </div>
             <div style="background:#003399;color:#9db9e8;font-size:10px;padding:6px 10px;">&copy;2003 MySpace.com. All Rights Reserved.</div>
           </div>` };
+        /* ================= YouTube — 2005 beta ================= */
+        const YT = [
+          ['dance', 'Evolution of Dance', '0:45', '158,231,003', '\u{1F57A}', '#f2c14e'],
+          ['numa', 'Numa Numa (Dragostea Din Tei)', '3:38', '44,201,512', '\u{1F3A4}', '#7ec8f7'],
+          ['swkid', 'Star Wars Kid', '1:56', '26,908,414', '\u{1F3AC}', '#d09090'],
+          ['unicorn', 'Charlie the Unicorn', '11:12', '9,104,882', '\u{1F984}', '#b07ed6'],
+          ['hamster', 'Hamster Dance (official remix)', '1:27', '12,441,009', '\u{1F439}', '#e0a35c']
+        ];
+        const ytThumb = v => '<div class="yt-cell"><div class="yt-thumb" style="background:linear-gradient(135deg,' + v[5] + ' 0%,#3a3f4a 130%);" data-go="http://www.youtube.com/watch?v=' + v[0] + '"><span>' + v[4] + '</span><i>\u25B6</i><b>' + v[3] + '</b></div>' +
+          '<div class="yt-vt" data-go="http://www.youtube.com/watch?v=' + v[0] + '">' + v[1] + '</div><div class="yt-vi">' + v[2] + ' \u2014 ' + v[3] + ' views</div></div>';
+        const ytHead = '<div class="yt-bar"><span>' + '<span class="yt-logo">You<span class="tube">Tube</span><em>beta</em></span> <span class="yt-slogan">Broadcast Yourself\u2122</span></span>' +
+          '<form data-custom class="yt-form"><input class="yt-input" placeholder="Search Videos..." maxlength="60"><button type="submit">Search</button></form></div>';
+        const ytBindSearch = pg => { const f = pg.querySelector('form.yt-form'); if (f) f.addEventListener('submit', e => { e.preventDefault(); go('http://www.youtube.com/results?search_tags=' + encodeURIComponent(f.querySelector('input').value || 'hamster dance')); }); };
+        const ytFoot = '<div class="yt-foot">&copy;2005 YouTube&trade;, Inc. \u2014 videos are powered by Macromedia&reg; Flash&trade; Player 6. Don\'t have Flash? Enjoy the thumbnails. | About | Press | Terms</div>';
+        S['youtube.com'] = { title: 'YouTube - Broadcast Yourself.', html: `
+          <div class="yt-wrap">${ytHead}
+            <div class="yt-main">
+              <div class="yt-hint">Check out the latest featured and most viewed videos:</div>
+              <div class="yt-grid">${YT.map(ytThumb).join('')}</div>
+              <div class="yt-cols">
+                <div class="yt-col"><h4>Most Discussed This Week</h4><ol><li>Evolution of Dance (41,203 comments)</li><li>Is the Numa Numa guy the new Britney? (8,112)</li><li>Star Wars Kid \u2014 should his school expel him?? (2,900)</li></ol></div>
+                <div class="yt-col"><h4>Video of the Day</h4>${ytThumb(YT[4])}</div>
+              </div>
+            </div>${ytFoot}
+          </div>`, after: pg => ytBindSearch(pg) };
+        S['youtube.com/results'] = { title: 'YouTube: Search results', html: `
+          <div class="yt-wrap">${ytHead}
+            <div class="yt-main"><div class="yt-hint">Search results for &ldquo;<b id="yt-q">hamster dance</b>&rdquo; \u2014 about <b>37,800</b> videos (0.07 seconds)</div>
+              <div class="yt-grid">${[YT[4], YT[0], YT[1]].map(ytThumb).join('')}</div>
+              <div class="yt-hint" style="color:#777;">Did you mean: <span data-go="http://www.youtube.com" style="color:#06c;cursor:pointer;">hamster dance</span></div>
+            </div>${ytFoot}
+          </div>`, after: pg => {
+            ytBindSearch(pg);
+            const q = (addrIn.value.match(/search_tags=([^&]*)/) || [])[1];
+            if (q) pg.querySelector('#yt-q').textContent = decodeURIComponent(q.replace(/\+/g, ' ')).toLowerCase();
+          } };
+        S['youtube.com/watch'] = { title: 'YouTube - Evolution of Dance', html: `
+          <div class="yt-wrap">${ytHead}
+            <div class="yt-main"><div class="yt-watch">
+              <div class="yt-player"><div class="yt-screen">
+                <div class="yt-buffer"><i></i></div>
+                <div class="yt-note">Loading video...<br><small>Buffering: your 56k modem is doing its best.</small></div>
+                <button class="yt-bigplay hidden" title="Play">\u25B6</button>
+              </div></div>
+              <div class="yt-info">
+                <div><b id="yt-wt" style="font-size:15px;">Evolution of Dance</b> <span id="yt-wv" style="color:#666;">\u2014 158,231,003 views</span></div>
+                <div class="yt-rate">Rate: <span style="color:#f0b400;">\u2605\u2605\u2605\u2605\u2605</span> 4.9 &nbsp;|&nbsp; Added on: <b>Apr 3, 2005</b> &nbsp;|&nbsp; Owned by: <span style="color:#06c;">jdancefan2005</span></div>
+                <div class="yt-desc">The greatest dance medley of all time, from the Twist to the Running Man. Filmed in a garage. Be kind, no flaming.</div>
+                <div class="yt-share"><span>\u{1F44D} 2,901,240</span><span>\u{1F44E} 3,108</span><span>\u2795 Add to Favorites</span><span>\u2709 Send to a Friend</span><span>\u{1F4DD} Flag</span></div>
+                <div class="yt-emb"><b>Embed:</b> Copy and paste this code into your page or <span data-go="http://www.myspace.com" style="color:#06c;cursor:pointer;">MySpace</span> profile!
+                  <textarea readonly rows="3">&lt;object width="425" height="350"&gt;&lt;param name="movie" value="http://www.youtube.com/v/dance"&gt;&lt;embed src="http://www.youtube.com/v/dance" type="application/x-shockwave-flash" width="425" height="350"&gt;&lt;/embed&gt;&lt;/object&gt;</textarea></div>
+                <h4 style="margin:10px 0 4px;">More Videos:</h4>
+                <div class="yt-grid small" id="yt-more"></div>
+              </div>
+            </div></div>${ytFoot}
+          </div>`, after: pg => {
+            ytBindSearch(pg);
+            const id = ((addrIn.value.match(/[?&]v=([^&]*)/) || [])[1] || 'dance').toLowerCase();
+            const v = YT.find(x => x[0] === id) || YT[0];
+            pg.querySelector('#yt-wt').textContent = v[1];
+            pg.querySelector('#yt-wv').textContent = '\u2014 ' + v[3] + ' views';
+            win.setTitle('YouTube - ' + v[1]);
+            const more = pg.querySelector('#yt-more');
+            more.innerHTML = YT.filter(x => x[0] !== v[0]).slice(0, 4).map(ytThumb).join('');
+            more.style.gridTemplateColumns = 'repeat(4,1fr)';
+            const scr = pg.querySelector('.yt-screen'), buf = pg.querySelector('.yt-buffer'), big = pg.querySelector('.yt-bigplay');
+            scr.querySelector('.yt-note').style.display = '';
+            buf.style.display = ''; big.classList.add('hidden');
+            setTimeout(() => { if (!pg.isConnected) return; buf.style.display = 'none'; scr.querySelector('.yt-note').style.display = 'none'; big.classList.remove('hidden'); }, 2600);
+            big.onclick = () => {
+              Sound.play('chord', { vol: .5 });
+              scr.innerHTML = '<div class="yt-dancing">' + v[4] + '</div><div class="yt-note" style="opacity:.75;">Now playing \u2014 in your imagination.&nbsp; &nbsp;' + v[2] + '</div>';
+            };
+          } };
+
+        /* ================= Wikipedia — 2001 style ================= */
+        const wikiPage = (title, body) => `
+          <div class="wiki-page">
+            <div class="wiki-top"><span class="wiki-word">Wikipedia</span> <span class="wiki-tag">the free encyclopedia</span>
+              <form data-custom class="wiki-form"><input placeholder="Search" size="18"><button>Go</button></form></div>
+            <hr class="wiki-hr">
+            <div class="wiki-nav">[ <span data-go="http://www.wikipedia.org" style="color:#0000cc;cursor:pointer;">Main Page</span> ] [ <span class="wiki-red">RecentChanges</span> ] [ <span class="wiki-red">RecentDiscussions</span> ] [ <span class="wiki-red">RandomPage</span> ]</div>
+            ${body}
+            <hr class="wiki-hr">
+            <div class="wiki-foot">This page is served from a very small server in Florida. Wikipedia needs more servers \u2014 <span class="wiki-red">donate one</span>!<br>
+            Powered by UseModWiki 0.92 \u00b2 \u00b7 This page has been accessed <b>23</b> times.</div>
+          </div>`;
+        const wikiBind = pg => { const f = pg.querySelector('form.wiki-form'); if (f) f.addEventListener('submit', e => { e.preventDefault(); const q = f.querySelector('input').value.toLowerCase();
+          go(/counter|strike|halflife/.test(q) ? 'http://www.wikipedia.org/wiki/Counter-Strike' : 'http://www.wikipedia.org/wiki/Windows_XP'); }); };
+        S['wikipedia.org'] = { title: 'Wikipedia, the free encyclopedia', html: wikiPage('Main Page', `
+          <h1 class="wiki-h1">Wikipedia</h1>
+          <p>Welcome to <b>Wikipedia</b>, the free encyclopedia that <i>anyone</i> can edit. We currently have <b>19,734</b> articles in English.</p>
+          <p>Wikipedia uses <b><span class="wiki-red">CamelCase</span></b> links: CapitalizeTheFirstLetterOfEachWordPlease. Note that currently both <span class="wiki-red">CamelCase</span> links and [[WikiWikiUse!]] style links work.</p>
+          <h3 class="wiki-h1">Current projects</h3>
+          <ul class="wiki-ul">
+            <li><span data-go="http://www.wikipedia.org/wiki/Windows_XP" style="color:#0000cc;cursor:pointer;">WindowsXp</span> \u2014 the grass one.</li>
+            <li><span data-go="http://www.wikipedia.org/wiki/Counter-Strike" style="color:#0000cc;cursor:pointer;">CounterStrike</span> \u2014 rush B.</li>
+            <li><span class="wiki-red">Nostalgia</span> \u2014 (this article has not been created yet.)</li>
+          </ul>
+          <p style="color:#666;"><i>Please be bold! But maybe not on the Windows XP page, it is locked (I locked it, my name is Jimmy Wales).</i></p>`, `
+          `), after: wikiBind };
+        S['wikipedia.org/wiki/windows_xp'] = { title: 'Windows XP - Wikipedia, the free encyclopedia', html: wikiPage('Windows XP', `
+          <h1 class="wiki-h1">Windows XP</h1>
+          <p><b>Windows XP</b> (short for <i>experience</i>, but also sounds like <span class="wiki-red">hexadecimal</span> 0xP, which is not true) is an operating system produced by <span data-go="http://www.msn.com" style="color:#0000cc;cursor:pointer;">Microsoft</span>, released on October 25, 2001. It is the one with the grass.</p>
+          <h3 class="wiki-h1">Table of contents</h3>
+          <ol class="wiki-ul"><li>Overview</li><li>Features</li><li>Luna</li><li>Criticisms</li></ol>
+          <h3 class="wiki-h1">1. Overview</h3>
+          <p>Windows XP unifies the consumer (Windows Me, RIP) and business (Windows 2000) lines onto the NT kernel. The default skin is called <b>Luna</b> and features blue taskbars and green Start buttons. Many users spend their first hour changing it back to Windows Classic, and the second hour playing 3D Pinball, which has been removed for legal reasons.</p>
+          <h3 class="wiki-h1">3. Luna</h3>
+          <p>The wallpaper, known as <b>Bliss</b>, is a photograph of hills in Sonoma County, California, taken with a Mamiya RZ45. People often ask if it is Photoshopped. It is not. It is just too green to be real, like all our memories.</p>
+          <h3 class="wiki-h1">4. Criticisms</h3>
+          <p>See also: <span class="wiki-red">ActivationUnfriendliness</span>, <span wiki-red="">MessengerService</span>, <span class="wiki-red">ClippyUnrelated</span>.</p>
+          <div class="wiki-box">This article is a stub. Can you expand it? Please do, I have been editing this page for 20 minutes.</div>
+          <div class="wiki-meta">Last modified 14:21, 24 Oct 2001 (UTC) \u00b7 <span class="wiki-red">Create new page</span></div>`, `
+          `), after: wikiBind };
+        S['wikipedia.org/wiki/counter-strike'] = { title: 'Counter-Strike - Wikipedia, the free encyclopedia', html: wikiPage('Counter-Strike', `
+          <h1 class="wiki-h1">Counter-Strike</h1>
+          <p><b>Counter-Strike</b> is a multiplayer first-person shooter, originally a Half-Life mod by Minh "Gooseman" Le and Jess Cliffe. Version 1.5, considered by its players (a strong word) to be the peak of human civilization, shipped in 2002.</p>
+          <h3 class="wiki-h1">Gameplay</h3>
+          <p>Two teams, <b>Counter-Terrorists</b> and <b>Terrorists</b>, attempt to complete objectives on maps of varying levels of dust. The most famous map, <b>de_dust2</b>, consists primarily of a middle that both teams agree to stare at.</p>
+          <h3 class="wiki-h1">Culture</h3>
+          <p>Phrases popularized by the game include "rush B", "cover me", and "he's lit". Buying a defuser is controversial. AWM camping is a lifestyle.</p>
+          <div class="wiki-box">This article is about the video game. For the actual thing, see <span class="wiki-red">PoliceAction</span> (not written yet).</div>
+          <div class="wiki-meta">Last modified 03:12, 11 Jun 2004 (UTC) \u00b7 <span class="wiki-red">Create new page</span></div>`, `
+          `), after: wikiBind };
+
+        /* ================= GeoCities — 1999 forever ================= */
+        const geoHead = '<div class="geo-head">\u{1F30E} <b>GEO</b>CITIES <span class="geo-sub">Build your own homepage! Free! Forever! (probably)</span></div>';
+        const geoCnt = n => '<span class="geo-cnt">' + String(n).padStart(6, '0').split('').map(d => '<span>' + d + '</span>').join('') + '</span>';
+        const geoRing = '<div class="geo-ring">[ <span data-go="http://www.geocities.com" style="cursor:pointer;">&laquo; Prev</span> ] &nbsp;&copy; The Awesome Homepages WebRing &nbsp; [ <span data-go="http://www.geocities.com" style="cursor:pointer;">Random</span> ] &nbsp; [ <span data-go="http://www.geocities.com" style="cursor:pointer;">Next &raquo;</span> ]</div>';
+        S['geocities.com'] = { title: 'GeoCities - Your Life on the Web', html: `
+          <div class="geo-page">${geoHead}
+            <div class="geo-body">
+              <div class="geo-marquee"><span>&#127381; Welcome to GeoCities \u2014 over 38 MILLION homepages in 40 neighborhoods! \u2022 Sign my guestbook!! \u2022 Best viewed with Netscape Navigator 4.0 at 800x600 \u2022 Don't forget to bookmark me!!! &#127381;</span></div>
+              <p style="font-family:'Comic Sans MS',cursive;font-size:15px;text-align:center;">Choose your <b>neighborhood</b> and meet your neighbors:</p>
+              <table class="geo-hoods" cellspacing="0">
+                <tr><td>\u{1F4BB} <span data-go="http://www.geocities.com/SiliconValley/8821">SiliconValley/8821</span><br><small>Jamie's Kool Homepage</small></td>
+                    <td>\u{1F47D} <span data-go="http://www.geocities.com/Area51/6776">Area51/6776</span><br><small>The Truth Page</small></td></tr>
+                <tr><td>\u{1F439} <span data-go="http://www.geocities.com/Heartland/4211">Heartland/4211</span><br><small>The Hamster Dance</small></td>
+                    <td>\u{1F3AC} <span>Hollywood/4478</span> <small>(walking there...)</small></td></tr>
+                <tr><td>\u{2696}\uFE0F <span>CapitolHill/2210</span> <small>(out of cookies)</small></td>
+                    <td>\u{1F5FC} <span>Tokyo/3357</span> <small>(dial-up congestion)</small></td></tr>
+              </table>
+              <p style="text-align:center;font-size:11px;">Not enough? Create your OWN homepage free! Only 4 MB. That's like... a whole barn.</p>
+              ${geoRing}
+            </div>
+            <div class="geo-foot">&copy;1999 GeoCities. All neighborhood names are trademarks of their respective neighborhoods. Nobody.</div>
+          </div>` };
+        S['geocities.com/siliconvalley/8821'] = { title: "Jamie's Kool Homepage!!!!1 - SiliconValley - GeoCities", html: `
+          <div class="geo-page dark">${geoHead}
+            <div class="geo-body">
+              <div class="geo-marquee light"><span>&#9733; Welcome 2 my homepage!!! &#9733; U R visitor number 004812 &#9733; Plz sign my guestbook b4 u leave or else &#9733; NEW: I learned HTML in shop class &#9733;</span></div>
+              <div style="text-align:center;">
+                <div class="geo-uc blink">\u{1F6A7} UNDER CONSTRUCTION \u{1F6A7}</div>
+                <hr class="geo-hr">
+                <h1 class="geo-title">~*~ Jamies Kool Homepage ~*~</h1>
+                <div class="geo-tag">home of: computers, the X-Files, hamsters &amp; legit warez (kidding... unless)</div>
+                <hr class="geo-hr">
+                <div class="geo-cnt-wrap">You are visitor number ${geoCnt(4812)} since Aug 1999</div>
+                <table width="100%" style="font-size:12px;"><tr>
+                  <td width="45%" valign="top"><div class="geo-side"><b>&#128190; STUFF 2 SEE</b>
+                    <ul class="geo-ul">
+                      <li><span data-go="http://www.geocities.com/Area51/6776">My X-Files page \u2014 THE TRUTH</span></li>
+                      <li><span data-go="http://www.geocities.com/Heartland/4211">The HAMSTER DANCE \u2014 do not miss</span></li>
+                      <li><span class="geo-gb">Sign my Guestbook!!</span></li>
+                      <li><span class="geo-midi">\u25B6 Play theme song (MIDI, 3 KB)</span></li>
+                      <li><span data-go="mailto:jammed_up@hotmail.com">E-mail me! (animated)</span></li>
+                    </ul></div></td>
+                  <td valign="top"><div class="geo-side"><b>&#128203; ABOUT ME</b>
+                    <p>name: jamie<br>age: 14 &frac12; (basically 15)<br>loc: SiliconValley, obviously<br>fav band: Linkin Park<br>fav color: #00FF00<br>fav OS: Windows 98 SE (XP is for spooks)</p>
+                    <p style="font-size:10px;color:#9f9;">"Those who can make you believe absurdities can make you commit atrocities." \u2014 Voltaire (probably)</p></div></td>
+                </tr></table>
+                <div class="geo-badges"><span class="geo-badge">NETSCAPE NOW!</span><span class="geo-badge">800x600</span><span class="geo-badge">Made with NOTEPAD</span><span class="geo-badge anti-spam">ANTI-SPAM</span></div>
+                ${geoRing}
+              </div>
+            </div>
+          </div>`, after: pg => {
+            pg.querySelector('.geo-gb').addEventListener('click', () => WM.msg('Guestbook', 'The guestbook is FULL (48 entries).\n\nMost recent entry, by xX_shadow_wolf_Xx:\n"sub7 me back pls, and put me in ur top section"\n\nDelete an entry to sign it? [Not allowed]', { type: 'info' }));
+            pg.querySelector('.geo-midi').addEventListener('click', () => { Sound.play('chimes', { vol: .6 }); WM.msg('Media Player', 'Now playing: final Countdown (midi).html\n\nThe melody is coming to you at a crisp 22050 Hz through your PC speaker. You are welcome.', { type: 'info' }); });
+            pg.querySelector('.anti-spam').addEventListener('click', () => WM.msg('Anti-Spam', 'This page asserts its right to be free of spam, junk mail, and unsolicited emails.\n\nIt has been 0 days since the last spam.', { type: 'info' }));
+          } };
+        S['geocities.com/area51/6776'] = { title: "THE TRUTH IS OUT THERE - Area51 - GeoCities", html: `
+          <div class="geo-page alien">${geoHead}
+            <div class="geo-body">
+              <h1 class="geo-title alien">THE TRUTH IS OUT THERE</h1>
+              <div class="geo-alien">.\u2022\u00b0.\u00b7 \u00b7\u00b0\u2022\u00b7.\u00b0 \u00b7\u00b0\u2022\u00b7.\u00b0 \u{1F6F8} \u00b0\u2022\u00b7.\u00b0 \u00b7\u00b0\u2022\u00b7.\u00b0 \u00b7\u2022\u00b0.</div>
+              <div class="geo-ufo">
+                <b>&#9888; EVIDENCE &#9888;</b>
+                <ul class="geo-ul">
+                  <li>Area 51: flights every night at 3am. I have a flashlight &amp; binoculars.</li>
+                  <li>Microwave ovens &ne; popcorn. They are <b>beacon jammers</b>.</li>
+                  <li>My cat stared at the sky for 6 hours on Aug 3, 1999.</li>
+                  <li>They put subliminal messages in the dial-up handshake. Listen again. LISTEN.</li>
+                </ul>
+              </div>
+              <div class="geo-alien blink">* * * THEY ARE READING THIS PAGE RIGHT NOW * * *</div>
+              <p style="text-align:center;"><span data-go="http://www.geocities.com/SiliconValley/8821" style="color:#4af;">&laquo; back to Jamie's page (before they take it down)</span></p>
+              ${geoRing}
+            </div>
+          </div>` };
+        S['geocities.com/heartland/4211'] = { title: 'The HAMSTER DANCE!!! - Heartland - GeoCities', html: `
+          <div class="geo-page hammy">${geoHead}
+            <div class="geo-body">
+              <h1 class="geo-title hammy">The HAMSTER DANCE!!</h1>
+              <div class="hamster">
+                ${Array.from({ length: 24 }, () => '<span>\u{1F439}</span>').join('')}
+              </div>
+              <div class="geo-lyrics">Oh ecs eh, ecs eh, ah ah, wu!<br>Oh ecs eh, ecs eh, ah ah, wu!<br>Oh ecs eh, ecs eh, ah ah, wu!<br>Oh whew!</div>
+              <div style="text-align:center;margin:10px 0;"><button class="geo-party">\u{1F3B5} PARTY MODE \u{1F3B5}</button></div>
+              <div class="geo-hint">This hamster was originally recorded at 1:47am over a sped-up sample of "Whistleumping"? No. It is legally "Whistle Dance". The hamsters demand respect.</div>
+              <div style="text-align:center;font-size:12px;margin:8px 0;">Now also on: <span data-go="http://www.youtube.com/watch?v=hamster" style="color:#06c;cursor:pointer;text-decoration:underline;">YouTube (beta)</span></div>
+              ${geoRing}
+            </div>
+          </div>`, after: pg => {
+            let party = false;
+            pg.querySelector('.geo-party').addEventListener('click', e => {
+              party = !party; pg.querySelector('.hamster').classList.toggle('party', party);
+              e.target.textContent = party ? '\u23F8 Stop the party' : '\u{1F3B5} PARTY MODE \u{1F3B5}';
+              if (party) Sound.play('chord', { vol: .55 });
+            });
+          } };
         return S;
       }
     }

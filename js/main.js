@@ -44,6 +44,7 @@ const Main = (() => {
     { id: 'email', label: 'E-mail', icon: ICON.email, act: () => WM.launch('iexplore', 'http://www.msn.com') },
     { id: 'msn', label: 'MSN Messenger', icon: ICON.msn, app: 'msn' },
     { id: 'icq', label: 'ICQ 2003', icon: ICQ_FLOWER, app: 'icq' },
+    { id: 'steam', label: 'Steam', icon: ICON.steam, app: 'steam' },
     { id: 'cmd', label: 'Command Prompt', icon: ICON.cmd, app: 'cmd' },
     { id: 'notepad', label: 'Notepad', icon: ICON.notepad, app: 'notepad' },
     { id: 'paint', label: 'Paint', icon: ICON.paint, app: 'paint' },
@@ -305,6 +306,8 @@ const Main = (() => {
     [
       [ICON.msn, 'MSN Messenger', () => WM.launch('msn')],
       [ICQ_FLOWER, 'ICQ 2003', () => WM.launch('icq')],
+      [ICON.steam, 'Steam', () => WM.launch('steam')],
+      [ICON.cs, 'Counter-Strike 1.5', () => WM.launch('cs')],
       [ICON.wmp, 'Windows Media Player', () => WM.launch('wmp')],
       [ICON.notepad, 'Notepad', () => WM.launch('notepad')],
       [ICON.paint, 'Paint', () => WM.launch('paint')],
@@ -365,7 +368,12 @@ const Main = (() => {
       label: 'Games', icon: ICON.folder, sub: [
         { label: 'Minesweeper', icon: ICON.mines, action: () => WM.launch('mines') },
         { label: 'Solitaire', icon: ICON.solitaire, action: () => WM.msg('Solitaire', 'Solitaire is starting...\n\nError: too many solitaires. You already played 347 games this year. Go outside.', { type: 'error' }) },
-        { label: '3D Pinball for Windows - Space Cadet', icon: ICON.catalog, action: () => WM.msg('3D Pinball', 'Cannot start 3D Pinball.\n\nThe 1990s called, they want their graphics card back.', { type: 'error' }) }
+        { label: '3D Pinball for Windows - Space Cadet', icon: ICON.catalog, action: () => WM.msg('3D Pinball', 'Cannot start 3D Pinball.\n\nThe 1990s called, they want their graphics card back.', { type: 'error' }) },
+        '-',
+        { label: 'Counter-Strike 1.5', icon: ICON.cs, action: () => WM.launch('cs') },
+        { label: 'StarCraft', icon: ICON.starcraft, action: () => WM.launch('starcraft') },
+        { label: 'Total Annihilation', icon: ICON.ta, action: () => WM.launch('ta') },
+        { label: 'Command & Conquer', icon: ICON.cnc, action: () => WM.launch('cnc') }
       ]
     },
     {
@@ -376,6 +384,7 @@ const Main = (() => {
     },
     '-',
     { label: 'Internet Explorer', icon: ICON.ie, action: () => WM.launch('iexplore'), strong: true },
+    { label: 'Steam', icon: ICON.steam, action: () => WM.launch('steam') },
     { label: 'Windows Catalog', icon: ICON.catalog, action: () => WM.launch('iexplore', 'http://catalog.microsoft.com') },
     {
       label: 'Windows Update', icon: ICON.update, action: () => WM.msg('Windows Update', 'Scanning for updates...\n\n127 important updates are available.\nYour last visit: January 2003.\n\nNobody visits anymore, not even you.', { type: 'info' })

@@ -90,7 +90,16 @@ const Sound = (() => {
       let a = cache[name];
       if (!a) {
         a = new Audio(url); a.preload = 'auto'; a.volume = vol;
-        a.addEventListener('error', () => { delete cache[name]; synth(name === 'msnSent' ? 'msnSent' : 'click'); });
+        a.addEventListener('error', () => {
+          delete cache[name];
+          if (a._retried) { synth(name === 'msnSent' ? 'msnSent' : 'click'); return; }
+          /* the browser may have cached a stale 404 from the CDN — retry bypassing cache */
+          const b = new Audio(url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now());
+          b.preload = 'auto'; b.volume = vol; b._retried = 1;
+          b.addEventListener('error', () => { delete cache[name]; synth(name === 'msnSent' ? 'msnSent' : 'click'); });
+          cache[name] = b;
+          b.play().catch(() => {});
+        });
         cache[name] = a;
       }
       const c = a.cloneNode(true);

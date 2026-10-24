@@ -51,6 +51,21 @@ const MSN_WINGED = svgIcon(
   '<path d="M16 4c-5 6-8 10-8 14a8 8 0 0 0 16 0c0-4-3-8-8-14z" fill="#ffd23f" stroke="#e6a800"/>' +
   '<circle cx="16" cy="17" r="3" fill="#0a8fd4"/>');
 
+/* ---- game art (authentic Steam CDN artwork) + wordmark fallbacks ---- */
+const GAPP = 'https://cdn.cloudflare.steamstatic.com/steam/apps/';
+const GAMEART = {
+  csBanner:   GAPP + '10/header.jpg',
+  hlBanner:   GAPP + '70/header.jpg',
+  dodBanner:  GAPP + '30/header.jpg',
+  tfcBanner:  GAPP + '40/header.jpg',
+  scBanner:   GAPP + '410/header.jpg',
+  bwBanner:   GAPP + '420/header.jpg'
+};
+const WORDMARK = (text, sub, bg, fg, sub2) => svgIcon(
+  '<rect width="32" height="32" rx="3" fill="' + bg + '"/>' +
+  '<text x="16" y="15" font-family="Arial Black,Arial" font-size="10" font-weight="900" fill="' + fg + '" text-anchor="middle">' + text + '</text>' +
+  '<text x="16" y="25" font-family="Arial" font-size="5.5" fill="' + (sub2 || fg) + '" text-anchor="middle">' + (sub || '') + '</text>');
+
 /* ---- icon map (48px originals, browser scales down) ---- */
 const ICON = {
   myComputer:    I + 'MyComputer.png',
@@ -129,7 +144,37 @@ const ICON = {
   userTile:      CDN.shiz + 'windowsIcons/user.png',
   startFlag:     CDN.shiz + 'windowsIcons/start.png',
   windowsLogo:   CDN.w32 + 'images/ms.png',
-  appWindow:     I + 'ApplicationWindow.png'
+  appWindow:     I + 'ApplicationWindow.png',
+  /* retro games */
+  steam: svgIcon(
+    '<rect x="1" y="1" width="30" height="30" rx="4" fill="#1b2838"/>' +
+    '<rect x="2" y="2" width="28" height="28" rx="3" fill="#2a475e"/>' +
+    '<circle cx="21" cy="11" r="4.6" fill="#c6d4df" stroke="#8fa3b0" stroke-width="1"/>' +
+    '<circle cx="21" cy="11" r="1.9" fill="#2a475e"/>' +
+    '<circle cx="11" cy="22" r="3.4" fill="#a8b8c4" stroke="#8fa3b0" stroke-width="1"/>' +
+    '<circle cx="11" cy="22" r="1.4" fill="#2a475e"/>' +
+    '<path d="M19.5 14.6 L12.4 19.4" stroke="#bfccd6" stroke-width="2.4" stroke-linecap="round"/>'),
+  cs: svgIcon(
+    '<rect width="32" height="32" rx="3" fill="#3b3427"/>' +
+    '<circle cx="16" cy="16" r="9" fill="none" stroke="#e8a33d" stroke-width="2"/>' +
+    '<path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="#e8a33d" stroke-width="2"/>' +
+    '<circle cx="16" cy="16" r="2.4" fill="#e8a33d"/>'),
+  starcraft: svgIcon(
+    '<rect width="32" height="32" rx="3" fill="#0d1b2e"/>' +
+    '<path d="M16 4l3 8 8 1-6 5 2 9-7-4-7 4 2-9-6-5 8-1z" fill="#f2c14e" stroke="#7a5b12" stroke-width="1"/>'),
+  ta: svgIcon(
+    '<rect width="32" height="32" rx="3" fill="#000"/>' +
+    '<path d="M16 5 L27 26 H5 Z" fill="none" stroke="#39e639" stroke-width="2"/>' +
+    '<circle cx="16" cy="19" r="3.4" fill="#39e639"/>'),
+  cnc: svgIcon(
+    '<rect width="32" height="32" rx="3" fill="#111"/>' +
+    '<text x="16" y="21" font-family="Arial Black,Arial" font-size="12" font-weight="900" fill="#ffd23f" text-anchor="middle">C&amp;C</text>'),
+  steamTile: WORDMARK('STEAM', '', '#2a475e', '#c6d4df'),
+  taTile: WORDMARK('TA', 'ANNIHILATION', '#000', '#39e639', '#9fdf9f'),
+  cncTile: WORDMARK('C&amp;C', 'TIBERIAN', '#000', '#ffd23f', '#c9a520'),
+  csTile: WORDMARK('CS', '1.5', '#3b3427', '#e8a33d', '#cbb98a'),
+  scTile: WORDMARK('SC', 'BROOD WAR', '#0d1b2e', '#f2c14e', '#b9964a'),
+  hlTile: WORDMARK('HL', '', '#263238', '#ff6d00')
 };
 
 /* ---- wallpapers ---- */
