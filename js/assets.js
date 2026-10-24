@@ -1,16 +1,17 @@
 /* ==========================================================================
-   assets.js — hot-linked original Windows XP / MSN / ICQ assets
-   Sources: jsDelivr CDN mirrors of open-source XP web recreations,
-   archive.org sound archive, Wikimedia Commons.
+   assets.js — original Windows XP / MSN / ICQ assets, bundled locally
+   (offline) in /assets, mirrored from jsDelivr XP repos, archive.org,
+   Wikimedia Commons, Steam CDN and game wikis. Run download_assets.py /
+   download_screens.py to refresh.
    ========================================================================== */
 'use strict';
 
 const CDN = {
-  w32:  'https://cdn.jsdelivr.net/gh/ducbao414/win32.run@main/static/',
-  shiz: 'https://cdn.jsdelivr.net/gh/ShizukuIchi/winXP@master/src/assets/',
-  msnr: 'https://cdn.jsdelivr.net/gh/ManzDev/twitch-msn-messenger@main/public/',
-  ia:   'https://archive.org/download/',
-  wiki: 'https://upload.wikimedia.org/wikipedia/'
+  w32:  'assets/w32/',
+  shiz: 'assets/shiz/',
+  msnr: 'assets/msnr/',
+  ia:   'assets/ia/',
+  wiki: 'assets/wiki/'
 };
 
 const I = CDN.w32 + 'images/xp/icons/';
@@ -51,15 +52,23 @@ const MSN_WINGED = svgIcon(
   '<path d="M16 4c-5 6-8 10-8 14a8 8 0 0 0 16 0c0-4-3-8-8-14z" fill="#ffd23f" stroke="#e6a800"/>' +
   '<circle cx="16" cy="17" r="3" fill="#0a8fd4"/>');
 
-/* ---- game art (authentic Steam CDN artwork) + wordmark fallbacks ---- */
-const GAPP = 'https://cdn.cloudflare.steamstatic.com/steam/apps/';
+/* ---- game art (official Steam CDN artwork, bundled) + wordmark fallbacks ---- */
+const GAPP = 'assets/steam/';
 const GAMEART = {
   csBanner:   GAPP + '10/header.jpg',
   hlBanner:   GAPP + '70/header.jpg',
   dodBanner:  GAPP + '30/header.jpg',
-  tfcBanner:  GAPP + '40/header.jpg',
-  scBanner:   GAPP + '410/header.jpg',
-  bwBanner:   GAPP + '420/header.jpg'
+  tfcBanner:  GAPP + '40/header.jpg'
+};
+/* real menu/briefing screenshots + original shortcut icons */
+const SCREENS = {
+  csMenu:      'assets/screens/cs_menu.webp',
+  csMenuItaly: 'assets/screens/cs_menu_italy.webp',
+  scBriefing:  'assets/screens/sc_briefing.png',
+  taBattle:    'assets/screens/ta_battle.jpg',
+  cncSplash:   'assets/screens/cnc_splash.webp',
+  cncBriefGdi: 'assets/screens/cnc_brief_gdi.webp',
+  cncBriefNod: 'assets/screens/cnc_brief_nod.webp'
 };
 const WORDMARK = (text, sub, bg, fg, sub2) => svgIcon(
   '<rect width="32" height="32" rx="3" fill="' + bg + '"/>' +
@@ -145,7 +154,7 @@ const ICON = {
   startFlag:     CDN.shiz + 'windowsIcons/start.png',
   windowsLogo:   CDN.w32 + 'images/ms.png',
   appWindow:     I + 'ApplicationWindow.png',
-  /* retro games */
+  /* retro games — original shortcut icons / box art (bundled in assets/) */
   steam: svgIcon(
     '<rect x="1" y="1" width="30" height="30" rx="4" fill="#1b2838"/>' +
     '<rect x="2" y="2" width="28" height="28" rx="3" fill="#2a475e"/>' +
@@ -154,21 +163,13 @@ const ICON = {
     '<circle cx="11" cy="22" r="3.4" fill="#a8b8c4" stroke="#8fa3b0" stroke-width="1"/>' +
     '<circle cx="11" cy="22" r="1.4" fill="#2a475e"/>' +
     '<path d="M19.5 14.6 L12.4 19.4" stroke="#bfccd6" stroke-width="2.4" stroke-linecap="round"/>'),
-  cs: svgIcon(
-    '<rect width="32" height="32" rx="3" fill="#3b3427"/>' +
-    '<circle cx="16" cy="16" r="9" fill="none" stroke="#e8a33d" stroke-width="2"/>' +
-    '<path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="#e8a33d" stroke-width="2"/>' +
-    '<circle cx="16" cy="16" r="2.4" fill="#e8a33d"/>'),
-  starcraft: svgIcon(
-    '<rect width="32" height="32" rx="3" fill="#0d1b2e"/>' +
-    '<path d="M16 4l3 8 8 1-6 5 2 9-7-4-7 4 2-9-6-5 8-1z" fill="#f2c14e" stroke="#7a5b12" stroke-width="1"/>'),
-  ta: svgIcon(
-    '<rect width="32" height="32" rx="3" fill="#000"/>' +
-    '<path d="M16 5 L27 26 H5 Z" fill="none" stroke="#39e639" stroke-width="2"/>' +
-    '<circle cx="16" cy="19" r="3.4" fill="#39e639"/>'),
-  cnc: svgIcon(
-    '<rect width="32" height="32" rx="3" fill="#111"/>' +
-    '<text x="16" y="21" font-family="Arial Black,Arial" font-size="12" font-weight="900" fill="#ffd23f" text-anchor="middle">C&amp;C</text>'),
+  cs:        'assets/art/cs15.webp',
+  hl:        'assets/steam/icons/70.jpg',
+  dod:       'assets/steam/icons/30.jpg',
+  tfc:       'assets/steam/icons/40.jpg',
+  starcraft: 'assets/art/starcraft.png',
+  ta:        'assets/art/ta.png',
+  cnc:       'assets/art/cncicon.webp',
   steamTile: WORDMARK('STEAM', '', '#2a475e', '#c6d4df'),
   taTile: WORDMARK('TA', 'ANNIHILATION', '#000', '#39e639', '#9fdf9f'),
   cncTile: WORDMARK('C&amp;C', 'TIBERIAN', '#000', '#ffd23f', '#c9a520'),
@@ -180,7 +181,7 @@ const ICON = {
 /* ---- wallpapers ---- */
 const WALLP = {
   bliss:  CDN.w32 + 'files/wallpapers/Bliss.jpg',
-  blissHQ:'https://upload.wikimedia.org/wikipedia/commons/c/cf/Bliss.jpg',
+  blissHQ:CDN.wiki + 'commons/c/cf/Bliss.jpg',
   azul:   CDN.w32 + 'files/wallpapers/Azul.jpg',
   autumn: CDN.w32 + 'files/wallpapers/Autumn.jpg',
   tulips: CDN.w32 + 'files/wallpapers/Tulips.jpg',

@@ -7,8 +7,9 @@ friends waiting to chat the moment you sign in.
 
 ## Run it
 
-Any static file server works (the page hot-links its assets, so an http:// origin is
-recommended — autoplay and CORS behave better):
+Any static file server works (an http:// origin is recommended — audio autoplay
+behaves better). All assets are bundled locally in `/assets`, so the desktop also
+works fully **offline**:
 
 ```sh
 # Python
@@ -19,7 +20,7 @@ python -m http.server 8123
 npx serve .
 ```
 
-Or just open `index.html` directly — everything except a couple of sound files will work.
+Or just open `index.html` directly — everything runs from the local files.
 
 ## What's inside
 
@@ -29,22 +30,29 @@ Or just open `index.html` directly — everything except a couple of sound files
 | Session | Log off, Turn Off Computer dialog, standby, shutdown → "It's now safe…" screen, BSOD (try ending `lsass.exe` in Task Manager, or `taskkill lsass.exe` in CMD) |
 | Window manager | Drag, resize, minimize-to-taskbar animation, maximize, taskbar buttons with flash, z-order focus, modal dialogs, context menus, balloons, tray with blink/badge |
 | Start menu | Pinned IE + E-mail, frequent list, All Programs flyout with nested submenus, right column, Log Off / Turn Off footer |
-| Desktop | 14 icons, rubber-band selection, drag & snap-to-grid, delete to Recycle Bin (restorable), New → Text Document, right-click menu |
+| Desktop | 18 icons incl. Steam + game shortcuts (original CS/StarCraft/TA/C&C icons & box art), rubber-band selection, drag & snap-to-grid, delete to Recycle Bin (restorable), New → Text Document, right-click menu |
 | Messengers | MSN 7.5 sign-in progress, buddy list with avatars/statuses/personal messages, chats with typing indicators, keyword auto-replies, **Nudge** (window shakes!), fake ad bar, scripted friends who message you after sign-in; ICQ 2003 float window with UINs, status tree, ICQ # message windows |
 | Apps | Notepad, Paint (flood fill, undo, save PNG), Calculator, Minesweeper (authentic sprites, first-click safe, flags/?), Command Prompt (help/dir/tree/ping/ipconfig/start/taskkill/shutdown…), Internet Explorer 6 (MSN, Google + search, MySpace with Top 8, **YouTube 2005 beta**, **Wikipedia 2001**, **GeoCities** — see Retro web), Windows Media Player (visualizer, 2003 playlist), Explorer windows (My Computer / Documents / Pictures / Recycle Bin), Control Panel, Display Properties (live wallpaper switcher), Date & Time, Search, Help, Run, winver |
 | Retro games | **Steam (2003 client)** with real game banners, tabs (Games/Friends/Servers), status bar — launches the games below. **Counter-Strike 1.5** via the Half-Life menu: create/join game, server browser (de_dust2 forever), console loading sequence, live HUD (killfeed, round timer, HP/ammo, F = flashbang, you will get AWP'd). **StarCraft** with Battle.net logon + chat channel chatter you can reply to, and a campaign that ends badly. **Total Annihilation**: green vector menu, skirmish setup, loading quotes ("The clock is ticking, Commander."), live battle log, DEFEAT. **Command & Conquer**: GDI/Nod side select, typed briefing, sidebar with POWER/UNIT READY/DEPLOY — and a nuclear strike if you linger |
 | Retro web | **YouTube (2005 beta)**: Broadcast Yourself™, video grid, search → results, watch page with buffering bar, view counts and MySpace embed code. **Wikipedia (2001)**: UseMod-style article pages, CamelCase links, "very small server in Florida". **GeoCities**: blinking UNDER CONSTRUCTION, marquee, LCD visitor counter, guestbook, webring, X-Files truth page, and of course **the Hamster Dance** (with PARTY MODE) |
 | Extras | Quick launch, tray (network status, volume mixer with master volume, security-center joke, blinking messengers), Mystify-style screensaver after 3 min idle, login balloons, Ctrl+Alt+Del, Win key, Win+D |
-| Sounds | Authentic XP scheme sounds, real MSN sounds (`newalert`, `online`, nudge), ICQ-flavored legacy sounds — all hot-linked, WebAudio synth fallback if offline |
+| Sounds | Authentic XP scheme sounds, real MSN sounds (`newalert`, `online`, nudge), ICQ-flavored legacy sounds — bundled, WebAudio synth fallback if a file is missing |
 
-## Authentic assets (hot-linked, nothing bundled)
+## Authentic assets (bundled in `/assets`, works offline)
 
-- Icons / sounds / wallpapers / boot logos: [`ducbao414/win32.run`](https://github.com/ducbao414/win32.run) via jsDelivr CDN
-- Minesweeper sprites + misc 16px icons: [`ShizukuIchi/winXP`](https://github.com/ShizukuIchi/winXP) via jsDelivr
-- MSN avatars + nudge sound: [`ManzDev/twitch-msn-messenger`](https://github.com/ManzDev/twitch-msn-messenger) via jsDelivr
+Everything was hot-linked from the original sources during development and is now
+downloaded into `/assets` (run `python download_assets.py` / `python download_screens.py`
+to refresh). Sources:
+
+- Icons / sounds / wallpapers / boot logos: [`ducbao414/win32.run`](https://github.com/ducbao414/win32.run)
+- Minesweeper sprites + misc 16px icons: [`ShizukuIchi/winXP`](https://github.com/ShizukuIchi/winXP)
+- MSN avatars + nudge sound: [`ManzDev/twitch-msn-messenger`](https://github.com/ManzDev/twitch-msn-messenger)
 - MSN notification sounds: archive.org (`newemail` item)
-- Bliss wallpaper + MSN logo: Wikimedia Commons
-- Game box art/banners (Counter-Strike, Half-Life, Day of Defeat, TFC, StarCraft, Brood War): official Steam CDN artwork
+- Bliss wallpaper, MSN logo, StarCraft briefing + TA gameplay screenshots: Wikimedia
+- Steam game banners + original app icons (CS, Half-Life, DoD, TFC): official Steam CDN
+- CS 1.5 menu background + original icon: [Counter Strike wiki](https://counterstrike.fandom.com)
+- C&C Tiberian Dawn briefing screens, splash + original icon: [CnC wiki](https://cnc.fandom.com)
+- StarCraft / Total Annihilation box art: [PCGamingWiki](https://www.pcgamingwiki.com)
 
 Every hot-link has an inline-SVG or alternate fallback (`data-fb` + global `onerror` handler),
 so a dead CDN degrades to generic icons instead of broken images.

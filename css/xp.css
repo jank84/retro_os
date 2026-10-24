@@ -29,7 +29,7 @@ img { -webkit-user-drag: none; }
 #boot-inner { text-align: center; width: 520px; }
 #boot-logo {
   height: 160px; margin-bottom: 26px;
-  background: url('https://cdn.jsdelivr.net/gh/ducbao414/win32.run@main/static/images/xp_loading_mslogo.jpg') no-repeat center 40%;
+  background: url('../assets/w32/images/xp_loading_mslogo.jpg') no-repeat center 40%;
   background-size: contain;
 }
 #boot-bar {
@@ -95,7 +95,7 @@ img { -webkit-user-drag: none; }
 #desktop-root { position: fixed; inset: 0; z-index: 1; }
 #desktop {
   position: absolute; inset: 0 0 30px 0;
-  background: #2c57a5 url('https://upload.wikimedia.org/wikipedia/commons/c/cf/Bliss.jpg') center/cover no-repeat;
+  background: #2c57a5 url('../assets/wiki/commons/c/cf/Bliss.jpg') center/cover no-repeat;
 }
 
 .desktop-icon {

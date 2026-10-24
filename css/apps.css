@@ -194,6 +194,7 @@
   background: radial-gradient(ellipse at 50% 30%, #14202e 0%, #05070d 75%);
 }
 .cs-menu img, .sc-menu img { width: 78%; max-width: 420px; border: 1px solid #22343f; }
+.sc-menu img.sc-logo { width: 120px; max-width: 120px; border: 1px solid #2a3f57; image-rendering: auto; }
 .cs-logo { font: 900 26px 'Arial Black', Arial; color: #e8a33d; letter-spacing: 2px; text-shadow: 0 0 14px rgba(232, 163, 61, .45); }
 .cs-logo span { color: #cbb98a; }
 .cs-logo i { font: bold 14px Tahoma; color: #cbb98a; font-style: normal; }
@@ -463,3 +464,21 @@ h3.wiki-h1 { font-size: 16px; }
 .geo-party { border: 3px outset #f0c; background: #f0c; color: #fff; font: bold 13px 'Comic Sans MS', cursive; padding: 5px 16px; cursor: pointer; }
 .geo-party:active { border-style: inset; }
 .geo-hint { font-size: 11px; color: #666; text-align: center; max-width: 520px; margin: 0 auto; }
+
+/* ---- real game menu / briefing screens (assets/screens) ---- */
+.cs-menu { position: relative; }
+.cs-menu img.cs-bg {
+  position: absolute; inset: 0; width: 100%; max-width: none; height: 100%;
+  object-fit: cover; border: 0; filter: saturate(.92) brightness(.8);
+}
+.cs-menu::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(4,7,13,.30) 0%, rgba(4,7,13,.55) 55%, rgba(4,7,13,.82) 100%);
+}
+.cs-menu > .cs-logo, .cs-menu > .cs-btns, .cs-menu > .sc-sub { position: relative; z-index: 2; }
+.cs-menu .cs-logo { text-shadow: 0 2px 10px #000, 0 0 18px rgba(232, 163, 61, .5); }
+.cs-menu .cs-btns { width: 190px; }
+.sc-brief { width: min(250px, 62%); border: 1px solid #2a3f57; margin: 0 auto 10px; }
+.ta-shot { width: min(230px, 66%); border: 1px solid #17391a; box-shadow: 0 0 16px rgba(57, 230, 57, .18); }
+.cnc-shot { width: min(340px, 78%); border: 1px solid #3a3010; box-shadow: 0 0 18px rgba(0,0,0,.6); margin-bottom: 4px; }
+.cnc-brief-img { display: block; width: 100%; max-height: 132px; object-fit: cover; border: 1px solid #4a3c00; margin-bottom: 10px; }

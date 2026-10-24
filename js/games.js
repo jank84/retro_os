@@ -45,19 +45,13 @@ APPS.steam = (() => {
     { name: 'Counter-Strike 1.5', icon: ICON.cs, status: 'Ready', banner: GAMEART.csBanner, fb: ICON.csTile,
       desc: 'Terrorists vs Counter-Terrorists. The most played game on Steam. de_dust2 forever.',
       play: () => APPS.cs.launch() },
-    { name: 'StarCraft', icon: ICON.starcraft, status: 'Ready', banner: GAMEART.scBanner, fb: ICON.scTile,
-      desc: 'Three races, one planet. Balance perfect enough to power a decade of esports.',
-      play: () => APPS.starcraft.launch() },
-    { name: 'StarCraft: Brood War', icon: ICON.starcraft, status: 'Ready', banner: GAMEART.bwBanner, fb: ICON.scTile,
-      desc: 'The expansion that made StarCraft immortal. Secrets of the Brood Mother.',
-      play: () => APPS.starcraft.launch() },
-    { name: 'Half-Life', icon: ICON.cs, status: 'Ready', banner: GAMEART.hlBanner, fb: ICON.hlTile,
+    { name: 'Half-Life', icon: ICON.hl, status: 'Ready', banner: GAMEART.hlBanner, fb: ICON.hlTile,
       desc: 'Resonance cascade at Black Mesa. Gordon Freeman, 0.7 seconds of destruction.',
       play: () => WM.msg('Half-Life', 'Please insert the Half-Life CD into drive D:.\n\n...You only own the "Greatest Hits" DVD, and it is in the car. Again.', { type: 'error' }) },
-    { name: 'Day of Defeat', icon: ICON.cs, status: 'Not installed', banner: GAMEART.dodBanner, fb: ICON.csTile,
+    { name: 'Day of Defeat', icon: ICON.dod, status: 'Not installed', banner: GAMEART.dodBanner, fb: ICON.csTile,
       desc: 'World War II multiplayer. Normandy never looked this pixelated.',
       play: () => WM.msg('Day of Defeat', 'Day of Defeat must be downloaded (612 MB).\n\nOver your ISDN line the estimated time is:\n\u2022 now: until Thursday\n\u2022 after your sister gets on the phone: until November', { type: 'info' }) },
-    { name: 'Team Fortress Classic', icon: ICON.cs, status: 'Not installed', banner: GAMEART.tfcBanner, fb: ICON.csTile,
+    { name: 'Team Fortress Classic', icon: ICON.tfc, status: 'Not installed', banner: GAMEART.tfcBanner, fb: ICON.csTile,
       desc: 'Nine classes. One engineer sentry that wins every round. Pyro does not count.',
       play: () => WM.msg('Team Fortress Classic', 'Install requires 340 MB.\n\nWould you like to queue this download behind your 96 MB of Hotmail attachments? [Yes]', { type: 'info' }) }
   ];
@@ -81,9 +75,8 @@ APPS.steam = (() => {
       menubar: [
         { label: '<u>G</u>ames', items: () => [
           { label: 'Play Counter-Strike 1.5', icon: ICON.cs, action: () => APPS.cs.launch() },
-          { label: 'Play StarCraft', icon: ICON.starcraft, action: () => APPS.starcraft.launch() },
           '-',
-          { label: 'Scan for games...', action: () => WM.msg('Steam', 'Game Scan complete.\n\nFound:\n\u2022 6 Steam games\n\u2022 1 cracked demo of Descent 3\n\u2022 471 files in C:\\ that are "not important"', { type: 'info' }) },
+          { label: 'Scan for games...', action: () => WM.msg('Steam', 'Game Scan complete.\n\nFound:\n\u2022 4 Steam games\n\u2022 1 cracked demo of Descent 3\n\u2022 471 files in C:\\ that are "not important"\n\u2022 StarCraft somewhere on a CD-RW labeled "DO NOT FORMAT"', { type: 'info' }) },
           '-',
           { label: 'Exit', action: () => win.close() }
         ]},
@@ -195,7 +188,7 @@ APPS.cs = (() => {
     win.setTitle('Half-Life');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'cs-menu');
-    scr.innerHTML = '<img src="' + GAMEART.csBanner + '" data-fb="' + ICON.csTile + '">' +
+    scr.innerHTML = '<img class="cs-bg" src="' + SCREENS.csMenu + '" data-fb="' + ICON.csTile + '" alt="">' +
       '<div class="cs-logo">COUNTER<span>-</span>STRIKE <i>1.5</i></div>';
     const btns = el('div', 'cs-btns');
     const mk = (label, fn) => { const x = el('button', 'cs-btn'); x.innerHTML = label; x.addEventListener('click', fn); btns.append(x); };
@@ -375,7 +368,7 @@ APPS.starcraft = (() => {
     win.setTitle('StarCraft');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'sc-menu');
-    scr.innerHTML = '<img src="' + GAMEART.scBanner + '" data-fb="' + ICON.scTile + '"><div class="sc-sub">Remastered... in your heart.</div>';
+    scr.innerHTML = '<img class="sc-logo" src="' + ICON.starcraft + '" data-fb="' + ICON.scTile + '"><div class="sc-sub">Remastered... in your heart.</div>';
     const btns = el('div', 'cs-btns');
     const mk = (label, fn) => { const x = el('button', 'cs-btn'); x.innerHTML = label; x.addEventListener('click', fn); btns.append(x); };
     mk('Single Player', single);
@@ -394,7 +387,7 @@ APPS.starcraft = (() => {
     win.setTitle('StarCraft \u2014 Campaign');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'cs-panel');
-    scr.innerHTML = '<h3>Select Mission</h3>';
+    scr.innerHTML = '<h3>Select Mission</h3><img class="sc-brief" src="' + SCREENS.scBriefing + '" data-fb="' + ICON.scTile + '" alt="briefing">';
     let sel = 0;
     const list = el('div');
     MISSIONS.forEach((m, i) => {
@@ -528,7 +521,8 @@ APPS.ta = (() => {
     win.setTitle('Total Annihilation');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'ta-menu');
-    scr.innerHTML = '<div class="ta-logo">TOTAL<br>ANNIHILATION</div><div class="ta-sub">Core vs Arm \u2014 the eternal war</div>';
+    scr.innerHTML = '<div class="ta-logo">TOTAL<br>ANNIHILATION</div><div class="ta-sub">Core vs Arm \u2014 the eternal war</div>' +
+      '<img class="ta-shot" src="' + SCREENS.taBattle + '" data-fb="' + ICON.taTile + '" alt="">';
     const btns = el('div', 'ta-btns');
     const mk = (label, fn) => { const x = el('button', 'ta-btn'); x.textContent = label; x.addEventListener('click', fn); btns.append(x); };
     mk('TUTORIAL', () => WM.msg('Tutorial', 'Tutorial 1: Build a constructor. Tutorial 2: It dies. Tutorial 3: Build another. Welcome to Total Annihilation.', { type: 'info' }));
@@ -632,7 +626,8 @@ APPS.cnc = (() => {
     win.setTitle('Command & Conquer');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'cnc-menu');
-    scr.innerHTML = '<div class="cnc-logo">COMMAND &amp; CONQUER</div><div class="cnc-sub">TIBERIAN DAWN</div>';
+    scr.innerHTML = '<img class="cnc-shot" src="' + SCREENS.cncSplash + '" data-fb="' + ICON.cncTile + '" alt="">' +
+      '<div class="cnc-logo">COMMAND &amp; CONQUER</div><div class="cnc-sub">TIBERIAN DAWN</div>';
     const btns = el('div', 'cs-btns');
     const mk = (label, fn) => { const x = el('button', 'cs-btn'); x.textContent = label; x.addEventListener('click', fn); btns.append(x); };
     mk('New Mission', () => select());
@@ -686,7 +681,8 @@ APPS.cnc = (() => {
     win.setTitle('Command & Conquer \u2014 ' + m[0]);
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'cnc-brief');
-    scr.innerHTML = '<h3>' + m[0] + '</h3><div class="cnc-txt"></div>';
+    scr.innerHTML = '<img class="cnc-brief-img" src="' + (side === 'NOD' ? SCREENS.cncBriefNod : SCREENS.cncBriefGdi) + '" data-fb="' + ICON.cncTile + '" alt="">' +
+      '<h3>' + m[0] + '</h3><div class="cnc-txt"></div>';
     const row = el('div', 'cs-row');
     const skip = el('button', 'cs-btn wide'); skip.textContent = 'Skip';
     const go = el('button', 'cs-btn wide default'); go.textContent = 'Accept Mission'; go.style.visibility = 'hidden';
