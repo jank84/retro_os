@@ -1,0 +1,147 @@
+/* ==========================================================================
+   apps.css — app-specific looks: MSN Messenger, ICQ, IE pages, misc
+   ========================================================================== */
+
+/* ---------------- MSN Messenger ---------------- */
+.msn-win { background: #fff; }
+.msn-signin { display: flex; flex-direction: column; height: 100%; padding: 0; }
+.msn-sign-hero {
+  height: 118px; flex: none;
+  background: linear-gradient(180deg, #fff 0%, #eef3fb 100%);
+  border-bottom: 1px solid #b7c9e8;
+  display: flex; align-items: center; justify-content: center;
+}
+.msn-sign-hero img { max-width: 88%; max-height: 96px; }
+.msn-sign-form { padding: 12px 16px; font-size: 11px; }
+.msn-sign-title { font-weight: bold; color: #0a499f; font-size: 12px; margin-bottom: 8px; }
+.msn-sign-form label { display: block; margin: 6px 0 2px; }
+.msn-in { width: 100%; }
+.msn-ck { display: flex !important; align-items: center; gap: 5px; flex-direction: row-reverse; justify-content: flex-end; }
+.msn-ck input { margin: 0; }
+.msn-sign-status { margin-top: 10px; font-size: 11px; color: #333; height: 14px; font-style: italic; }
+
+.msn-list { height: 100%; overflow-y: auto; background: #fff; font-size: 11px; }
+.msn-me { display: flex; gap: 7px; padding: 8px; border-bottom: 1px solid #dbe5f4; background: #f5f8fd; }
+.msn-me-ava { width: 48px; height: 48px; border: 1px solid #9dab9d; background: #fff; flex: none; }
+.msn-me-info { min-width: 0; }
+.msn-me-name { font-size: 12px; }
+.msn-me-msg { color: #555; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+.msn-group {
+  background: linear-gradient(180deg, #fdfdfe, #e9eff9);
+  border-top: 1px solid #dbe5f4; border-bottom: 1px solid #dbe5f4;
+  padding: 3px 6px; font-weight: bold; color: #0a499f; cursor: default;
+  user-select: none;
+}
+.msn-caret { font-size: 9px; display: inline-block; width: 12px; color: #6687b8; }
+.msn-bud { display: flex; gap: 6px; align-items: flex-start; padding: 4px 8px 4px 16px; cursor: default; }
+.msn-bud:hover { background: #e8f0fd; }
+.msn-bud.newmsg .msn-bud-name { color: #0a499f; }
+.msn-bud img { width: 24px; height: 24px; border: 1px solid #bbb; background: #fff; flex: none; }
+.msn-bud-info { min-width: 0; }
+.msn-bud-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.msn-bud-msg { color: #777; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; font-size: 10px; }
+.msn-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,.35); margin-right: 3px; vertical-align: middle; flex: none; margin-top: 6px; }
+
+.msn-ad { display: flex; border-top: 3px solid #0a499f; background: #fff; cursor: pointer; min-height: 52px; }
+.msn-ad-l { flex: 1; padding: 4px 8px; font-size: 11px; overflow: hidden; }
+.msn-ad-l span { color: #666; font-size: 10px; }
+.msn-ad-r { width: 52px; flex: none; color: #fff; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-family: 'Georgia', serif; }
+.msn-ad-bottom { flex: none; }
+
+/* Conversations */
+.msn-convo { display: flex; flex-direction: column; height: 100%; background: #fff; }
+.msn-conv-head { flex: none; display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-bottom: 1px solid #dbe5f4; background: #f5f8fd; font-size: 12px; }
+.msn-conv-head img { width: 32px; height: 32px; border: 1px solid #bbb; }
+.msn-conv-disp { color: #777; font-style: italic; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msn-conv-menu { flex: none; display: flex; gap: 14px; padding: 3px 10px; font-size: 11px; border-bottom: 1px solid #dbe5f4; background: linear-gradient(180deg, #fdfdfd, #f1f5fc); }
+.msn-conv-menu span { cursor: default; padding: 1px 4px; }
+.msn-conv-menu span:hover { background: #0a499f; color: #fff; }
+.msn-log { flex: 1; overflow-y: auto; padding: 8px 10px; font: 11px/1.45 Verdana, Tahoma, sans-serif; }
+.msn-msg { margin-bottom: 6px; word-wrap: break-word; }
+.msn-who { font-weight: bold; color: #0a499f; }
+.msn-msg.me .msn-who { color: #b03060; }
+.msn-sys { color: #666; font-style: italic; background: #fff7e0; border: 1px solid #f0dfa8; padding: 1px 6px; border-radius: 3px; font-size: 10px; }
+.emo { font-style: normal; }
+.msn-typing { flex: none; font-size: 10px; color: #777; font-style: italic; padding: 2px 10px; }
+.msn-input-row { flex: none; display: flex; flex-direction: column; border-top: 1px solid #c3d3ec; }
+.msn-conv-toolbar { display: flex; gap: 2px; padding: 3px 6px; background: linear-gradient(180deg, #fdfdfd, #e8effb); border-bottom: 1px solid #d6e2f3; }
+.msn-conv-toolbar button { font-size: 11px; padding: 1px 7px; }
+.msn-nudge { margin-left: auto !important; font-weight: bold !important; color: #a0164a !important; }
+.msn-input-wrap { padding: 4px 6px; }
+.msn-input-wrap textarea {
+  width: 100%; height: 52px; resize: none; border: 1px solid #7f9db9; font: 11px/1.4 Verdana, Tahoma, sans-serif; padding: 3px; outline: none;
+}
+.msn-convo-win .xp-body { padding: 0; }
+
+/* ---------------- ICQ 2003 ---------------- */
+.icq-float { display: flex; flex-direction: column; height: 100%; background: #edf1f7; font-size: 11px; }
+.icq-head { flex: none; display: flex; align-items: center; gap: 6px; padding: 5px 7px; background: linear-gradient(180deg, #fdfdfd, #dde7f5); border-bottom: 1px solid #b7c9e8; }
+.icq-head img { width: 26px; height: 26px; }
+.icq-head .icq-uin { color: #555; font-size: 10px; }
+.icq-status-row { flex: none; display: flex; gap: 4px; padding: 4px 7px; border-bottom: 1px solid #c9d7ea; background: #f6f9fd; align-items: center; }
+.icq-status-row select { font-size: 10px; }
+.icq-tree { flex: 1; overflow-y: auto; background: #fff; border: 1px solid #9dabd0; margin: 5px; padding: 3px; }
+.icq-cat { font-weight: bold; color: #0a499f; padding: 2px 4px; cursor: default; user-select: none; }
+.icq-contact { display: flex; align-items: center; gap: 5px; padding: 2px 4px 2px 18px; cursor: default; }
+.icq-contact:hover { background: #e8f0fd; }
+.icq-contact img { width: 16px; height: 16px; }
+.icq-contact .uin { color: #888; font-size: 10px; }
+.icq-foot { flex: none; display: flex; gap: 3px; padding: 4px 6px; border-top: 1px solid #c9d7ea; background: #eef3fa; }
+.icq-foot button { font-size: 10px; padding: 2px 6px; }
+
+.icq-msg-win { display: flex; flex-direction: column; height: 100%; background: #edf1f7; }
+.icq-msg-head { flex: none; padding: 6px 8px; border-bottom: 1px solid #c9d7ea; background: linear-gradient(180deg, #fdfdfd, #dde7f5); font-size: 11px; }
+.icq-msg-log { flex: 1; overflow-y: auto; margin: 6px; background: #fff; border: 1px solid #9dabd0; padding: 8px; font: 11px/1.5 Tahoma, sans-serif; }
+.icq-msg-in { flex: none; margin: 0 6px 6px; }
+.icq-msg-in textarea { width: 100%; height: 56px; resize: none; border: 1px solid #7f9db9; font: 11px Verdana; padding: 3px; outline: none; }
+.icq-msg-bar { flex: none; display: flex; gap: 6px; padding: 0 6px 6px; }
+.icq-msg-bar .right { margin-left: auto; display: flex; gap: 6px; }
+
+/* ---------------- Internet Explorer fake pages ---------------- */
+.ie-page { font: 13px/1.5 'Times New Roman', serif; color: #000; background: #fff; }
+.ie-page a { color: #0000cc; }
+.ie-page h1, .ie-page h2, .ie-page h3 { font-family: Verdana, Arial, sans-serif; }
+.ie-msn-head { background: #0a499f; color: #fff; padding: 8px 14px; font-family: Verdana; }
+.ie-btn-bevel { border: 2px outset #ddd; background: #eee; font: 11px Tahoma; padding: 2px 10px; cursor: pointer; }
+.ie-searchbox { border: 2px inset #ccc; font: 13px Tahoma; }
+
+/* Command prompt caret blink */
+.cmd-in:focus { outline: none; }
+
+/* Windows Media Player */
+.wmp-wrap { display: flex; flex-direction: column; height: 100%; background: #17191f; color: #cfd6e4; font: 11px Tahoma; }
+.wmp-top { flex: none; display: flex; justify-content: space-between; padding: 4px 8px; background: linear-gradient(180deg, #3a3f4c, #22252d); border-bottom: 1px solid #000; }
+.wmp-main { flex: 1; display: flex; min-height: 0; }
+.wmp-viz-wrap { flex: 1; background: #000; position: relative; }
+.wmp-viz { width: 100%; height: 100%; display: block; }
+.wmp-nowplaying { position: absolute; left: 10px; bottom: 8px; font: 11px Tahoma; color: #9fd0ff; text-shadow: 0 0 6px #003b7a; }
+.wmp-list { width: 190px; flex: none; background: #1e2129; border-left: 1px solid #000; overflow-y: auto; }
+.wmp-list-head { padding: 4px 8px; background: #2a2e38; color: #8fb8e8; font-weight: bold; border-bottom: 1px solid #000; }
+.wmp-track { padding: 3px 8px; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wmp-track:hover { background: #2c3442; }
+.wmp-track.playing { color: #6fd26f; }
+.wmp-bottom { flex: none; background: linear-gradient(180deg, #2b2f39, #17191f); border-top: 1px solid #000; padding: 5px 8px; }
+.wmp-seek { height: 6px; background: #0a0c10; border: 1px solid #000; margin-bottom: 5px; cursor: pointer; }
+.wmp-seek-fill { height: 100%; background: linear-gradient(180deg, #7fb6ff, #1659ad); width: 0%; }
+.wmp-controls { display: flex; align-items: center; gap: 4px; }
+.wmp-btn {
+  width: 30px; height: 22px; border: 1px solid #555c6b; border-radius: 3px;
+  background: linear-gradient(180deg, #49505e, #2b2f39); color: #dfe6f2; cursor: pointer; font-size: 11px;
+}
+.wmp-btn:hover { background: linear-gradient(180deg, #5b6373, #373c48); }
+.wmp-time { font: 10px 'Courier New', monospace; color: #9fb4d4; margin-left: 8px; }
+.wmp-vol { width: 70px; margin-left: 8px; }
+
+/* Minesweeper extra bits */
+.mine-cell.openbomb { background: #e06060 !important; }
+.mine-face img { image-rendering: pixelated; }
+
+/* Task Manager bars */
+.tm-bar { height: 14px; background: #eee; border: 1px solid #999; position: relative; }
+.tm-bar > div { height: 100%; background: linear-gradient(180deg, #6fba6f, #2f8f2f); }
+
+/* ICQ status dot */
+.icq-fl { display: inline-block; width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,.4); vertical-align: middle; flex: none; }
+
+/* BSOD fine print */
+#bsod { font-family: 'Lucida Console', 'Courier New', monospace; }

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows XP</title>
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/ducbao414/win32.run@main/static/images/xp/icons/MyComputer.png">
+<link rel="stylesheet" href="css/xp.css">
+<link rel="stylesheet" href="css/apps.css">
+</head>
+<body>
+
+<!-- ============ BOOT / BIOS ============ -->
+<div id="bios" class="screen hidden"></div>
+
+<div id="boot" class="screen hidden">
+  <div id="boot-inner">
+    <div id="boot-logo"></div>
+    <div id="boot-bar"><div id="boot-bar-block"><span></span></div></div>
+    <div id="boot-copy">Copyright &copy; Microsoft Corp</div>
+  </div>
+</div>
+
+<!-- ============ WELCOME / LOGON ============ -->
+<div id="welcome" class="screen hidden">
+  <div id="welcome-top"></div>
+  <div id="welcome-mid">
+    <div id="welcome-brand">Windows<span>XP</span></div>
+    <div id="welcome-prompt">To begin, click your user name</div>
+    <div id="welcome-users"></div>
+  </div>
+  <div id="welcome-bottom">
+    <div id="welcome-hint">Tip: Click Start, and then click Control Panel to customize your computer.</div>
+    <div id="welcome-clock"></div>
+  </div>
+</div>
+
+<!-- ============ DESKTOP ============ -->
+<div id="desktop-root" class="hidden">
+  <div id="desktop"></div>
+  <div id="windows-layer"></div>
+  <div id="menus-layer"></div>
+  <div id="balloons"></div>
+  <div id="taskbar">
+    <div id="start-button"><img id="start-flag" alt=""><span>start</span></div>
+    <div id="quick-launch"></div>
+    <div id="task-buttons"></div>
+    <div id="tray">
+      <div id="tray-icons"></div>
+      <div id="clock"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ START MENU ============ -->
+<div id="start-menu" class="hidden">
+  <div id="sm-header">
+    <img id="sm-avatar" alt="">
+    <span id="sm-user">User</span>
+  </div>
+  <div id="sm-body">
+    <div id="sm-left">
+      <div id="sm-pinned"></div>
+      <div class="sm-sep"></div>
+      <div id="sm-frequent"></div>
+      <div id="sm-allprograms" class="sm-item sm-strong"><img alt=""><span>All Programs</span><b class="sm-arrow">&#9654;</b></div>
+    </div>
+    <div id="sm-right">
+      <div id="sm-right-top"></div>
+      <div class="sm-sep-r"></div>
+      <div id="sm-right-mid"></div>
+      <div class="sm-sep-r"></div>
+      <div id="sm-right-bottom"></div>
+    </div>
+  </div>
+  <div id="sm-footer">
+    <div class="sm-foot-item" id="sm-logoff"><img alt=""><span>Log Off</span></div>
+    <div class="sm-foot-item" id="sm-shutdown"><img alt=""><span>Turn Off Computer</span></div>
+  </div>
+  <div id="sm-programs-flyout" class="hidden"></div>
+</div>
+
+<!-- ============ OVERLAYS ============ -->
+<div id="turnoff-dialog" class="hidden">
+  <div id="turnoff-box">
+    <div id="turnoff-title">What do you want the computer to do?</div>
+    <div id="turnoff-buttons">
+      <button class="turnoff-btn" id="btn-standby"><span class="to-ico" id="to-standby"></span>Stand&nbsp;By</button>
+      <button class="turnoff-btn" id="btn-turnoff"><span class="to-ico" id="to-turnoff"></span>Turn&nbsp;Off</button>
+      <button class="turnoff-btn" id="btn-restart"><span class="to-ico" id="to-restart"></span>Restart</button>
+    </div>
+    <button id="btn-turncancel">Cancel</button>
+  </div>
+</div>
+
+<div id="logoff-screen" class="screen hidden">
+  <div id="logoff-text">Windows is logging you off...</div>
+</div>
+
+<div id="shutdown-screen" class="screen hidden">
+  <div id="shutdown-text"></div>
+</div>
+
+<div id="safe-screen" class="screen hidden">
+  <div id="safe-text">It's now safe to turn off<br>your computer.</div>
+</div>
+
+<div id="bsod" class="screen hidden"><div id="bsod-text"></div></div>
+
+<div id="screensaver"><canvas id="screensaver-canvas"></canvas></div>
+
+<script src="js/assets.js"></script>
+<script src="js/sounds.js"></script>
+<script src="js/wm.js"></script>
+<script src="js/boot.js"></script>
+<script src="js/apps.js"></script>
+<script src="js/msn.js"></script>
+<script src="js/icq.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
