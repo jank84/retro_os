@@ -31,7 +31,42 @@ const Gameware = (() => {
     };
     step();
   }
-  return { el, rnd, timers, loadLines };
+  /* ---- "require CD" mode (js/config.js) — splash screen + insert-CD error ---- */
+  const NOCD = {
+    cs: { title: 'Counter-Strike 1.5', icon: ICON.cs, img: SCREENS.csMenu, cap: 'COUNTER-STRIKE 1.5',
+      w: 470, h: 330,
+      err: 'Steam was unable to launch Counter-Strike 1.5.\n\nPlease insert the Counter-Strike CD-ROM into drive D: and click OK.\n\nOr download the 62 MB patch over ISDN.\nEstimated time remaining: long weekend.' },
+    starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: ICON.starcraft, cap: 'STARCRAFT',
+      w: 380, h: 400,
+      err: 'Battle.net could not start StarCraft.\n\nPlease insert the StarCraft CD into drive D:.\n\nIf a CD is already in the drive, it is the wrong CD. It is always the wrong CD.' },
+    ta: { title: 'Total Annihilation', icon: ICON.ta, img: ICON.ta, cap: 'TOTAL ANNIHILATION',
+      w: 400, h: 400,
+      err: 'Total Annihilation failed to start.\n\nPlease insert Total Annihilation CD 1 of 2 into drive D:.\n\nHave your CD key ready. It is on the inside of the manual, next to where the cat sleeps.' },
+    cnc: { title: 'Command & Conquer', icon: ICON.cnc, img: SCREENS.cncSplash, cap: 'COMMAND &amp; CONQUER \u2014 TIBERIAN DAWN',
+      w: 470, h: 340,
+      err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' }
+  };
+  const noCdWins = {};
+  /* returns the splash window when requireCd is on, null when full games are enabled */
+  function splashOnly(key) {
+    if (!(window.RETRO && RETRO.games && RETRO.games.requireCd)) return null;
+    const g = NOCD[key];
+    if (noCdWins[key] && noCdWins[key].el.isConnected) { noCdWins[key].focus(); return noCdWins[key]; }
+    const body = el('div', 'nocd-win');
+    body.innerHTML = '<img src="' + g.img + '" data-fb="' + ICON.appWindow + '" alt="">' +
+      '<div class="nocd-cap">' + g.cap + '</div>';
+    const win = WM.openWindow({ title: g.title, icon: g.icon, width: g.w, height: g.h, cls: 'nocd-outer', body, status: 'Loading...' });
+    noCdWins[key] = win;
+    const T = timers(win);
+    T.add(() => win.setStatus('Starting...'), 700);
+    T.add(() => {
+      win.setStatus('CD-ROM drive D: not ready');
+      Sound.play('error');
+      WM.msg(g.title + ' - CD Required', g.err, { type: 'error', width: 430 }).then(() => win.close());
+    }, 1500);
+    return win;
+  }
+  return { el, rnd, timers, loadLines, splashOnly };
 })();
 
 /* ================================================================
@@ -176,6 +211,7 @@ APPS.cs = (() => {
   const NPC = ['headshot', 'fired his own HE grenade', 'fell off the map', 'the floor', 'a flashbang and dignity'];
 
   function launch() {
+    const s = Gameware.splashOnly('cs'); if (s) return s;
     if (win && win.el.isConnected) { win.focus(); return win; }
     const body = el('div');
     body.className = 'cs-win';
@@ -356,6 +392,7 @@ APPS.starcraft = (() => {
   let win = null;
 
   function launch() {
+    const s = Gameware.splashOnly('starcraft'); if (s) return s;
     if (win && win.el.isConnected) { win.focus(); return win; }
     const body = el('div');
     body.className = 'sc-win';
@@ -501,6 +538,7 @@ APPS.ta = (() => {
   ];
 
   function launch() {
+    const s = Gameware.splashOnly('ta'); if (s) return s;
     if (win && win.el.isConnected) { win.focus(); return win; }
     const body = el('div');
     body.className = 'ta-win';
@@ -614,6 +652,7 @@ APPS.cnc = (() => {
   };
 
   function launch() {
+    const s = Gameware.splashOnly('cnc'); if (s) return s;
     if (win && win.el.isConnected) { win.focus(); return win; }
     const body = el('div');
     body.className = 'cnc-win';

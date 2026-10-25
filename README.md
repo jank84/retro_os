@@ -38,6 +38,14 @@ Or just open `index.html` directly — everything runs from the local files.
 | Extras | Quick launch, tray (network status, volume mixer with master volume, security-center joke, blinking messengers), Mystify-style screensaver after 3 min idle, login balloons, Ctrl+Alt+Del, Win key, Win+D |
 | Sounds | Authentic XP scheme sounds, real MSN sounds (`newalert`, `online`, nudge), ICQ-flavored legacy sounds — bundled, WebAudio synth fallback if a file is missing |
 
+## Config (`js/config.js`)
+
+Plain JS settings file, edit & refresh — no build step.
+
+| Setting | Default | Effect |
+|---|---|---|
+| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft / Total Annihilation / Command & Conquer only shows the splash screen + a period-correct "insert CD" error. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
+
 ## Authentic assets (bundled in `/assets`, works offline)
 
 Everything was hot-linked from the original sources during development and is now
