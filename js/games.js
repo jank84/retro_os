@@ -41,14 +41,42 @@ const Gameware = (() => {
       err: 'Total Annihilation failed to start.\n\nPlease insert Total Annihilation CD 1 of 2 into drive D:.\n\nHave your CD key ready. It is on the inside of the manual, next to where the cat sleeps.' },
     cnc: { title: 'Command & Conquer', icon: ICON.cnc,  /* no splash art — straight to the error */
       err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' },
-    wow: { title: 'World of Warcraft', icon: ICON.wow, img: SCREENS.wowSplash,
-      err: 'World of Warcraft could not connect to the logon server.\n\nPlease insert the World of Warcraft CD into drive D:.\n\nYou have been in the queue for 47 minutes.\nCurrent position: 3,812. Do not press Alt+F4.' }
+    wow: { title: 'World of Warcraft', icon: ICON.wow }  /* handled by wowQueue() — login video + eternal queue */
   };
   const noCdWins = {};
   /* returns a truthy value when requireCd is on (splash overlay or direct error),
      null when full games are enabled */
+  /* WoW 2004: login-screen video + eternal queue dialog, styled after the
+     classic vanilla error box (dark panel, gold serif text, glossy red Okay) */
+  function wowQueue() {
+    if (noCdWins.wow && noCdWins.wow.isConnected) { noCdWins.wow.focus && noCdWins.wow.focus(); return noCdWins.wow; }
+    const layer = document.getElementById('windows-layer');
+    const ov = el('div', 'wow-queue');
+    const vid = el('video');
+    vid.src = SCREENS.wowLogin; vid.poster = SCREENS.wowLoginPoster;
+    vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true; vid.setAttribute('playsinline', '');
+    const dlg = el('div', 'wow-qdlg');
+    const msg = el('div', 'wow-qtext');
+    msg.innerHTML = 'You are queued for your server.<br>Place in the queue <b></b>';
+    const bNum = msg.querySelector('b');
+    const btn = el('button', 'wow-qok'); btn.textContent = 'Okay';
+    dlg.append(msg, btn); ov.append(vid, dlg);
+    let pos = 9124782;
+    const render = () => { bNum.textContent = pos.toLocaleString('en-US') + '.'; };
+    render();
+    const iv = setInterval(() => { pos -= 1200 + Math.floor(Math.random() * 8300); render(); }, 2000);
+    btn.addEventListener('click', () => { clearInterval(iv); ov.remove(); });
+    let top = 100;
+    layer.querySelectorAll('.xp-win').forEach(w => { top = Math.max(top, parseInt(w.style.zIndex, 10) || 100); });
+    ov.style.zIndex = top + 1;
+    layer.append(ov);
+    noCdWins.wow = ov;
+    vid.play && vid.play().catch(() => {});
+    return ov;
+  }
   function splashOnly(key) {
     if (!(window.RETRO && RETRO.games && RETRO.games.requireCd)) return null;
+    if (key === 'wow') return wowQueue();  /* login video + eternal queue, no CD gag */
     const g = NOCD[key];
     if (!g.img) {  /* no splash for this game — show the error dialog right away */
       if (noCdWins[key]) return 'open';

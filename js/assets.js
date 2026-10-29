@@ -67,6 +67,8 @@ const SCREENS = {
   scBriefing:  'assets/screens/sc_briefing.png',
   scLoading:   'assets/screens/sc_loading.webp',
   wowSplash:   'assets/screens/wow_splash.webp',
+  wowLogin:    'assets/screens/wow_login.mp4',
+  wowLoginPoster: 'assets/screens/wow_login_poster.jpg',
   taBattle:    'assets/screens/ta_battle.jpg',
   cncSplash:   'assets/screens/cnc_splash.webp',
   cncBriefGdi: 'assets/screens/cnc_brief_gdi.webp',

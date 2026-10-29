@@ -487,6 +487,46 @@ h3.wiki-h1 { font-size: 16px; }
 .wow-outer .xp-body { background: #0b0f14; }
 .wow-menu .wow-logo { display: block; width: min(230px, 58%); margin: 4px auto 10px; }
 
+/* ---- WoW login queue overlay (requireCd=true): looping login video +
+       "eternal queue" dialog in the style of the classic vanilla error box ---- */
+.wow-queue {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 50vw; max-width: calc(52vh * 16 / 9);
+  background: #000; box-shadow: 0 18px 90px rgba(0, 0, 0, .9);
+  pointer-events: auto;
+  animation: nocd-fade .3s ease-out;
+}
+.wow-queue video { display: block; width: 100%; height: auto; }
+.wow-qdlg {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 13px;
+  min-width: min(300px, 62%); padding: 16px 26px 18px;
+  background: rgba(12, 10, 6, .92);
+  border: 1px solid #8a7435;
+  box-shadow: 0 0 0 1px #000, 0 10px 44px rgba(0, 0, 0, .85),
+              inset 0 0 26px rgba(0, 0, 0, .7);
+}
+.wow-qdlg::before {  /* thin inner metallic line, like the real dialog frame */
+  content: ''; position: absolute; inset: 3px; pointer-events: none;
+  border: 1px solid rgba(154, 130, 62, .5);
+}
+.wow-qtext {
+  font: bold 14px/1.65 Georgia, 'Times New Roman', serif;
+  color: #ffd100; text-align: center; letter-spacing: .4px;
+  text-shadow: 0 1px 2px #000, 0 0 10px rgba(255, 209, 0, .18);
+}
+.wow-qtext b { color: #fff09a; }
+.wow-qok {
+  min-width: 96px; padding: 4px 26px 5px; cursor: pointer;
+  font: bold 13px Georgia, 'Times New Roman', serif;
+  color: #ffd100; text-shadow: 0 1px 1px #000;
+  background: linear-gradient(#9c3b2e 0%, #7c241b 42%, #5a150f 52%, #6d1d15 100%);
+  border: 1px solid #a8842c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 -2px 4px rgba(0, 0, 0, .45), 0 2px 7px rgba(0, 0, 0, .6);
+}
+.wow-qok:hover { filter: brightness(1.22); }
+.wow-qok:active { filter: brightness(.85); box-shadow: inset 0 2px 5px rgba(0, 0, 0, .55); }
+
 /* ---- "insert CD" splash screens (js/config.js → games.requireCd) ---- */
 .nocd-splash {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
