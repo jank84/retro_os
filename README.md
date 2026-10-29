@@ -45,7 +45,7 @@ Plain JS settings file, edit & refresh — no build step.
 | Setting | Default | Effect |
 |---|---|---|
 | `boot.skipToDesktop` | `true` | Start straight at the desktop — skips BIOS POST, the XP boot loader and the welcome screen (Restart / BSOD flows skip too; Log Off still shows the welcome screen). Set `false` for the full boot. |
-| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft shows the game's borderless splash (click to skip) followed by a period-correct "insert CD" error; Total Annihilation and Command & Conquer show the error dialog right away; World of Warcraft plays the vanilla login screen on a loop under an eternal "You are queued for your server" dialog. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
+| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft shows the game's borderless splash (click to skip) followed by a period-correct "insert CD" error; Total Annihilation and Command & Conquer show the error dialog right away; World of Warcraft opens a big window playing the vanilla login screen (with sound) under an eternal "You are queued for your server" dialog. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
 
 ## Authentic assets (bundled in `/assets`, works offline)
 
@@ -60,7 +60,7 @@ to refresh). Sources:
 - Bliss wallpaper, MSN logo, StarCraft briefing + TA gameplay screenshots: Wikimedia
 - Steam game banners + original app icons (CS, Half-Life, DoD, TFC): official Steam CDN
 - World of Warcraft vanilla logo emblem (desktop icon + splash): ClipartKey
-- World of Warcraft login-screen video loop (`assets/screens/wow_login.mp4`, silent 12 s cut via ffmpeg): archive.org item `world-of-warcraft-login-screen`; queue dialog look referenced from a classic vanilla error screenshot
+- World of Warcraft login-screen video loop (`assets/screens/wow_login.mp4`, 12 s cut with audio via ffmpeg): archive.org item `world-of-warcraft-login-screen`; queue dialog look referenced from a classic vanilla error screenshot
 - CS 1.5 menu background + original icon: [Counter Strike wiki](https://counterstrike.fandom.com)
 - C&C Tiberian Dawn briefing screens, splash + original icon: [CnC wiki](https://cnc.fandom.com)
 - StarCraft / Total Annihilation box art: [PCGamingWiki](https://www.pcgamingwiki.com)

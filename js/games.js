@@ -46,33 +46,39 @@ const Gameware = (() => {
   const noCdWins = {};
   /* returns a truthy value when requireCd is on (splash overlay or direct error),
      null when full games are enabled */
-  /* WoW 2004: login-screen video + eternal queue dialog, styled after the
-     classic vanilla error box (dark panel, gold serif text, glossy red Okay) */
+  /* WoW 2004: login-screen video (with sound) + eternal queue dialog, shown in a
+     classic XP window covering most of the screen; dialog styled after the
+     vanilla error box (dark panel, gold serif text, glossy red Okay) */
   function wowQueue() {
-    if (noCdWins.wow && noCdWins.wow.isConnected) { noCdWins.wow.focus && noCdWins.wow.focus(); return noCdWins.wow; }
-    const layer = document.getElementById('windows-layer');
-    const ov = el('div', 'wow-queue');
+    if (noCdWins.wow && noCdWins.wow.el.isConnected) { noCdWins.wow.focus(); return noCdWins.wow; }
+    const d = document.getElementById('windows-layer').getBoundingClientRect();
+    const w = Math.round(d.width * .8), h = Math.round(d.height * .8);
+    const body = el('div', 'wow-player');
     const vid = el('video');
     vid.src = SCREENS.wowLogin; vid.poster = SCREENS.wowLoginPoster;
-    vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true; vid.setAttribute('playsinline', '');
+    vid.loop = true; vid.playsInline = true; vid.setAttribute('playsinline', '');
     const dlg = el('div', 'wow-qdlg');
     const msg = el('div', 'wow-qtext');
     msg.innerHTML = 'You are queued for your server.<br>Place in the queue <b></b>';
     const bNum = msg.querySelector('b');
     const btn = el('button', 'wow-qok'); btn.textContent = 'Okay';
-    dlg.append(msg, btn); ov.append(vid, dlg);
+    dlg.append(msg, btn); body.append(vid, dlg);
+    const win = WM.openWindow({ title: 'World of Warcraft', icon: ICON.wow, app: 'wow',
+      width: w, height: h, x: Math.round((d.width - w) / 2), y: Math.round((d.height - h) / 2),
+      cls: 'wow-video-win', body });
     let pos = 9124782;
     const render = () => { bNum.textContent = pos.toLocaleString('en-US') + '.'; };
     render();
-    const iv = setInterval(() => { pos -= 1200 + Math.floor(Math.random() * 8300); render(); }, 2000);
-    btn.addEventListener('click', () => { clearInterval(iv); ov.remove(); });
-    let top = 100;
-    layer.querySelectorAll('.xp-win').forEach(w => { top = Math.max(top, parseInt(w.style.zIndex, 10) || 100); });
-    ov.style.zIndex = top + 1;
-    layer.append(ov);
-    noCdWins.wow = ov;
-    vid.play && vid.play().catch(() => {});
-    return ov;
+    const T = timers(win);  /* auto-cleared when the window closes */
+    T.loop(() => { pos -= 1200 + Math.floor(Math.random() * 8300); render(); }, 2000);
+    const oc = win.onClose;
+    win.onClose = () => { vid.pause(); if (oc) oc(); };
+    btn.addEventListener('click', () => win.close());
+    noCdWins.wow = win;
+    /* launched from a double-click, so user activation allows playing with sound;
+       fall back to muted if the browser still refuses */
+    vid.play && vid.play().catch(() => { vid.muted = true; vid.play && vid.play().catch(() => {}); });
+    return win;
   }
   function splashOnly(key) {
     if (!(window.RETRO && RETRO.games && RETRO.games.requireCd)) return null;

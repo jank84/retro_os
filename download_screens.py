@@ -24,11 +24,11 @@ pairs = [
     #     -fuzz 15% -fill none -draw 'color 899,0 floodfill' ... (4 corners) -trim +repage \
     #     -background none -gravity center -extent '%[fx:max(w,h)]x%[fx:max(w,h)]' \
     #     -> resize 128 = assets/art/wow.png ; resize 560 -quality 90 = assets/screens/wow_splash.webp
-    # World of Warcraft login-screen video (loop under the queue dialog):
+    # World of Warcraft login-screen video (loop + sound under the queue dialog):
     #   https://archive.org/download/world-of-warcraft-login-screen/World%20of%20Warcraft%20Login%20Screen.mp4
-    #   ffmpeg -ss 25 -t 12 -i full.mp4 -an -vf scale=960:-2 -c:v libx264 -crf 30 \
-    #     -preset veryfast -movflags +faststart assets/screens/wow_login.mp4
-    #   ffmpeg -ss 32 -i full.mp4 -frames:v 1 -vf scale=960:-2 -q:v 4 assets/screens/wow_login_poster.jpg
+    #   ffmpeg -ss 25 -t 12 -i full.mp4 -vf scale=1280:-2 -c:v libx264 -crf 30 \
+    #     -preset veryfast -c:a aac -b:a 96k -movflags +faststart assets/screens/wow_login.mp4
+    #   ffmpeg -ss 32 -i full.mp4 -frames:v 1 -vf scale=1280:-2 -q:v 4 assets/screens/wow_login_poster.jpg
     # Total Annihilation — real gameplay screenshot (Wikipedia)
     ('https://upload.wikimedia.org/wikipedia/en/9/9a/Total_annihilation_screenie_3.1415926.jpg', 'screens/ta_battle.jpg'),
     # C&C Tiberian Dawn — real mission briefing screens + in-engine splash + original game icon (CNC wiki)
