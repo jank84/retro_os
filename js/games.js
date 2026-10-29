@@ -36,8 +36,8 @@ const Gameware = (() => {
     cs: { title: 'Counter-Strike 1.5', icon: ICON.cs, img: SCREENS.csMenu, cap: 'COUNTER-STRIKE 1.5',
       w: 470, h: 330,
       err: 'Steam was unable to launch Counter-Strike 1.5.\n\nPlease insert the Counter-Strike CD-ROM into drive D: and click OK.\n\nOr download the 62 MB patch over ISDN.\nEstimated time remaining: long weekend.' },
-    starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: ICON.starcraft, cap: 'STARCRAFT',
-      w: 380, h: 400,
+    starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: SCREENS.scLoading, cap: 'STARCRAFT',
+      w: 470, h: 380,
       err: 'Battle.net could not start StarCraft.\n\nPlease insert the StarCraft CD into drive D:.\n\nIf a CD is already in the drive, it is the wrong CD. It is always the wrong CD.' },
     ta: { title: 'Total Annihilation', icon: ICON.ta, img: ICON.ta, cap: 'TOTAL ANNIHILATION',
       w: 400, h: 400,
@@ -405,7 +405,7 @@ APPS.starcraft = (() => {
     win.setTitle('StarCraft');
     const b = win.body; b.innerHTML = '';
     const scr = el('div', 'sc-menu');
-    scr.innerHTML = '<img class="sc-logo" src="' + ICON.starcraft + '" data-fb="' + ICON.scTile + '"><div class="sc-sub">Remastered... in your heart.</div>';
+    scr.innerHTML = '<img class="sc-logo" src="' + ICON.scCover + '" data-fb="' + ICON.scTile + '"><div class="sc-sub">Remastered... in your heart.</div>';
     const btns = el('div', 'cs-btns');
     const mk = (label, fn) => { const x = el('button', 'cs-btn'); x.innerHTML = label; x.addEventListener('click', fn); btns.append(x); };
     mk('Single Player', single);

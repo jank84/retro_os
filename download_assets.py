@@ -54,7 +54,7 @@ for gid in [10, 70, 30, 40]:
 for gid, h in [(10,'6b0312cda02f5f777efa2f3318c307ff9acafbb5'),(70,'95be6d131fc61f145797317ca437c9765f24b41c'),
                (30,'aadc0ce51ff6ba2042d633f8ec033b0de62091d0'),(40,'c525f76c8bc7353db4fd74b128c4ae2028426c2a')]:
     pairs.append((COMM + str(gid) + '/' + h + '.jpg', 'steam/icons/%d.jpg' % gid))
-pairs.append(('https://images.pcgamingwiki.com/9/90/StarCraft_Cover.png', 'art/starcraft.png'))
+pairs.append(('https://images.pcgamingwiki.com/9/90/StarCraft_Cover.png', 'art/starcraft_cover.png'))
 pairs.append(('https://images.pcgamingwiki.com/6/6c/Total_Annihilation_Coverart.png', 'art/ta.png'))
 
 # extra game screenshots/menu art filled in by download_screens.py — placeholder list stays empty here
