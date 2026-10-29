@@ -31,40 +31,42 @@ const Gameware = (() => {
     };
     step();
   }
-  /* ---- "require CD" mode (js/config.js) — splash screen + insert-CD error ---- */
+  /* ---- "require CD" mode (js/config.js) — borderless splash + insert-CD error ---- */
   const NOCD = {
-    cs: { title: 'Counter-Strike 1.5', icon: ICON.cs, img: SCREENS.csMenu, cap: 'COUNTER-STRIKE 1.5',
-      w: 470, h: 330,
+    cs: { title: 'Counter-Strike 1.5', icon: ICON.cs, img: SCREENS.csMenu,
       err: 'Steam was unable to launch Counter-Strike 1.5.\n\nPlease insert the Counter-Strike CD-ROM into drive D: and click OK.\n\nOr download the 62 MB patch over ISDN.\nEstimated time remaining: long weekend.' },
-    starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: SCREENS.scLoading, cap: 'STARCRAFT',
-      w: 470, h: 380,
+    starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: SCREENS.scLoading,
       err: 'Battle.net could not start StarCraft.\n\nPlease insert the StarCraft CD into drive D:.\n\nIf a CD is already in the drive, it is the wrong CD. It is always the wrong CD.' },
-    ta: { title: 'Total Annihilation', icon: ICON.ta, img: ICON.ta, cap: 'TOTAL ANNIHILATION',
-      w: 400, h: 400,
+    ta: { title: 'Total Annihilation', icon: ICON.ta, img: SCREENS.taBattle,
       err: 'Total Annihilation failed to start.\n\nPlease insert Total Annihilation CD 1 of 2 into drive D:.\n\nHave your CD key ready. It is on the inside of the manual, next to where the cat sleeps.' },
-    cnc: { title: 'Command & Conquer', icon: ICON.cnc, img: SCREENS.cncSplash, cap: 'COMMAND &amp; CONQUER \u2014 TIBERIAN DAWN',
-      w: 470, h: 340,
+    cnc: { title: 'Command & Conquer', icon: ICON.cnc, img: SCREENS.cncSplash,
       err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' }
   };
   const noCdWins = {};
-  /* returns the splash window when requireCd is on, null when full games are enabled */
+  /* returns the splash overlay when requireCd is on, null when full games are enabled */
   function splashOnly(key) {
     if (!(window.RETRO && RETRO.games && RETRO.games.requireCd)) return null;
     const g = NOCD[key];
-    if (noCdWins[key] && noCdWins[key].el.isConnected) { noCdWins[key].focus(); return noCdWins[key]; }
-    const body = el('div', 'nocd-win');
-    body.innerHTML = '<img src="' + g.img + '" data-fb="' + ICON.appWindow + '" alt="">' +
-      '<div class="nocd-cap">' + g.cap + '</div>';
-    const win = WM.openWindow({ title: g.title, icon: g.icon, width: g.w, height: g.h, cls: 'nocd-outer', body, status: 'Loading...' });
-    noCdWins[key] = win;
-    const T = timers(win);
-    T.add(() => win.setStatus('Starting...'), 700);
-    T.add(() => {
-      win.setStatus('CD-ROM drive D: not ready');
+    if (noCdWins[key] && noCdWins[key].isConnected) return noCdWins[key];
+    const layer = document.getElementById('windows-layer');
+    const ov = el('div', 'nocd-splash');
+    const img = el('img'); img.src = g.img; img.dataset.fb = g.icon; img.alt = '';
+    ov.append(img);
+    let top = 100;
+    layer.querySelectorAll('.xp-win').forEach(w => { top = Math.max(top, parseInt(w.style.zIndex, 10) || 100); });
+    ov.style.zIndex = top + 1;
+    let t = null;
+    const err = () => {
+      if (!ov.isConnected) return;
+      clearTimeout(t);
       Sound.play('error');
-      WM.msg(g.title + ' - CD Required', g.err, { type: 'error', width: 430 }).then(() => win.close());
-    }, 1500);
-    return win;
+      WM.msg(g.title + ' - CD Required', g.err, { type: 'error', width: 430 }).then(() => ov.remove());
+    };
+    ov.addEventListener('click', err);  /* click skips the splash, like the real thing */
+    layer.append(ov);
+    noCdWins[key] = ov;
+    t = setTimeout(err, 1700);
+    return ov;
   }
   return { el, rnd, timers, loadLines, splashOnly };
 })();

@@ -114,6 +114,14 @@ const Boot = (() => {
   }
 
   async function bootSequence() {
+    if (window.RETRO && RETRO.boot && RETRO.boot.skipToDesktop) {
+      /* the welcome-screen click normally unlocks audio — do it on first gesture */
+      const rel = () => { document.removeEventListener('pointerdown', rel); document.removeEventListener('keydown', rel); Sound.unlock(); };
+      document.addEventListener('pointerdown', rel);
+      document.addEventListener('keydown', rel);
+      enterDesktop('User');
+      return;
+    }
     await typeBios();
     await bootLoader(4200);
     const user = await showWelcome();
