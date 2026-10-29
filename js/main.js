@@ -40,8 +40,13 @@ const Main = (() => {
     { id: 'mydocuments', label: 'My Documents', icon: ICON.myDocuments, app: 'explorer-documents' },
     { id: 'mypictures', label: 'My Pictures', icon: ICON.myPictures, app: 'explorer-pictures' },
     { id: 'recyclebin', label: 'Recycle Bin', icon: ICON.recycleEmpty, app: 'explorer-recyclebin', recycle: true },
+    { id: 'firefox', label: 'Firefox', icon: ICON.firefox, app: 'firefox' },
     { id: 'ie', label: 'Internet Explorer', icon: ICON.ie, app: 'iexplore' },
-    { id: 'email', label: 'E-mail', icon: ICON.email, act: () => WM.launch('iexplore', 'http://www.msn.com') },
+    { id: 'email', label: 'E-mail', icon: ICON.email, act: () => WM.openWeb('http://www.msn.com') },
+    { id: 'weu', label: 'World of Warcraft Europe', icon: ICON.wow, act: () => WM.openWeb('http://www.wow-europe.com/de') },
+    { id: 'swkid', label: 'Star Wars Kid.avi', icon: ICON.avi, act: () => APPS.wmp.launch({ name: 'Star Wars Kid.avi', kind: 'video' }) },
+    { id: 'winamp', label: 'Winamp', icon: ICON.winamp, app: 'winamp' },
+    { id: 'teamspeak', label: 'TeamSpeak 2', icon: ICON.teamspeak, app: 'teamspeak' },
     { id: 'msn', label: 'MSN Messenger', icon: ICON.msn, app: 'msn' },
     { id: 'icq', label: 'ICQ 2003', icon: ICQ_FLOWER, app: 'icq' },
     { id: 'steam', label: 'Steam', icon: ICON.steam, app: 'steam' },
@@ -303,8 +308,8 @@ const Main = (() => {
 
     const pinned = $('sm-pinned'); pinned.innerHTML = '';
     pinned.append(
-      WM.smItem(ICON.ie, 'Internet Explorer', { action: () => WM.launch('iexplore') }, true),
-      WM.smItem(ICON.email, 'E-mail', { action: () => WM.launch('iexplore', 'http://www.msn.com') }, true)
+      WM.smItem(ICON.firefox, 'Mozilla Firefox', { action: () => WM.launch('firefox') }, true),
+      WM.smItem(ICON.email, 'E-mail', { action: () => WM.openWeb('http://www.msn.com') }, true)
     );
 
     const freq = $('sm-frequent'); freq.innerHTML = '';
@@ -364,6 +369,7 @@ const Main = (() => {
         {
           label: 'Entertainment', icon: ICON.folder, sub: [
             { label: 'Windows Media Player', icon: ICON.wmp, action: () => WM.launch('wmp') },
+            { label: 'Winamp', icon: ICON.winamp, action: () => WM.launch('winamp') },
             { label: 'Sound Recorder', icon: ICON.volume, action: () => WM.msg('Sound Recorder', 'No sound recorder hardware was detected.\n\n(Try humming into the microphone you do not have.)', { type: 'info' }) }
           ]
         }
@@ -385,13 +391,16 @@ const Main = (() => {
     {
       label: 'Communications', icon: ICON.folder, sub: [
         { label: 'MSN Messenger', icon: ICON.msn, action: () => WM.launch('msn') },
-        { label: 'ICQ 2003', icon: ICQ_FLOWER, action: () => WM.launch('icq') }
+        { label: 'ICQ 2003', icon: ICQ_FLOWER, action: () => WM.launch('icq') },
+        { label: 'TeamSpeak 2', icon: ICON.teamspeak, action: () => WM.launch('teamspeak') }
       ]
     },
     '-',
-    { label: 'Internet Explorer', icon: ICON.ie, action: () => WM.launch('iexplore'), strong: true },
+    { label: 'Mozilla Firefox', icon: ICON.firefox, action: () => WM.launch('firefox'), strong: true },
+    { label: 'Internet Explorer', icon: ICON.ie, action: () => WM.launch('iexplore') },
+    { label: 'Winamp', icon: ICON.winamp, action: () => WM.launch('winamp') },
     { label: 'Steam', icon: ICON.steam, action: () => WM.launch('steam') },
-    { label: 'Windows Catalog', icon: ICON.catalog, action: () => WM.launch('iexplore', 'http://catalog.microsoft.com') },
+    { label: 'Windows Catalog', icon: ICON.catalog, action: () => WM.openWeb('http://catalog.microsoft.com') },
     {
       label: 'Windows Update', icon: ICON.update, action: () => WM.msg('Windows Update', 'Scanning for updates...\n\n127 important updates are available.\nYour last visit: January 2003.\n\nNobody visits anymore, not even you.', { type: 'info' })
     }
@@ -468,6 +477,7 @@ const Main = (() => {
     mk(ICON.desktop, 'Show Desktop', ICON.appWindow, () => {
       WM.wins.forEach(w => { if (!w.isMin) w.minimize(); });
     });
+    mk(ICON.firefox, 'Mozilla Firefox', ICON.ieAlt, () => WM.launch('firefox'));
     mk(ICON.ie, 'Internet Explorer', ICON.ieAlt, () => WM.launch('iexplore'));
     mk(ICON.wmp9, 'Windows Media Player', ICON.wmp, () => WM.launch('wmp'));
     mk(ICON.msnTray, 'MSN Messenger', ICON.msn, () => WM.launch('msn'));

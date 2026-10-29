@@ -38,6 +38,26 @@ const ICQ_FLOWER = svgIcon(
   '<circle cx="16" cy="16.6" r="4.2"/></g>' +
   '<circle cx="16" cy="16.6" r="2.2" fill="#4cb050"/>');
 
+/* Classic Winamp 2 faceplate — hand-drawn: dark skin, green LED, transport */
+const WINAMP_ICON = svgIcon(
+  '<rect x="1" y="7" width="30" height="18" rx="2" fill="#3b3b3b" stroke="#0d0d0d"/>' +
+  '<rect x="1" y="7" width="30" height="4" rx="2" fill="#585858"/>' +
+  '<rect x="3" y="13" width="16" height="7" fill="#0c1408" stroke="#111"/>' +
+  '<rect x="4.5" y="14.6" width="13" height="1.6" fill="#33ff33"/>' +
+  '<rect x="4.5" y="17.2" width="9" height="1.6" fill="#1fae1f"/>' +
+  '<polygon points="22,13 28,16.5 22,20" fill="#d2d2d2"/>' +
+  '<rect x="3" y="21.6" width="5" height="2" fill="#8a8a8a"/>' +
+  '<rect x="9.4" y="21.6" width="5" height="2" fill="#8a8a8a"/>' +
+  '<rect x="15.8" y="21.6" width="5" height="2" fill="#8a8a8a"/>');
+
+/* TeamSpeak 2 — blue client icon with the little voice guy */
+const TS_ICON = svgIcon(
+  '<rect x="1" y="1" width="30" height="30" rx="6" fill="#2a56c6" stroke="#12307e"/>' +
+  '<rect x="2.5" y="2.5" width="27" height="12" rx="4" fill="#4a7de0" opacity=".55"/>' +
+  '<circle cx="13" cy="11.5" r="3.6" fill="#fff"/>' +
+  '<path d="M6.4 25c0-4.6 3-7.4 6.6-7.4s6.6 2.8 6.6 7.4z" fill="#fff"/>' +
+  '<path d="M23.4 10.6a8 8 0 0 1 0 10.8M26.2 8a11.6 11.6 0 0 1 0 16" fill="none" stroke="#cfe0ff" stroke-width="2" stroke-linecap="round"/>');
+
 const ICQ_FLOWER_BW = svgIcon(
   '<circle cx="16" cy="16" r="15" fill="#9db8a0" stroke="#5c7a60" stroke-width="1"/>' +
   '<g fill="#d9e6da">' +
@@ -151,7 +171,16 @@ const ICON = {
   update:        I + 'WindowsUpdate.png',
   email:         I + 'MSNEmail.png',
   mail:          CDN.shiz + 'windowsIcons/mail.png',
-  winamp:        CDN.shiz + 'windowsIcons/winamp.png',
+  winamp:        WINAMP_ICON,
+  firefox:       'assets/art/firefox.png',
+  teamspeak:     TS_ICON,
+  avi: svgIcon(
+    '<rect x="7" y="2" width="18" height="28" rx="1" fill="#fff" stroke="#8a8a8a"/>' +
+    '<path d="M19 2l6 6h-6z" fill="#d8d8d8" stroke="#8a8a8a"/>' +
+    '<rect x="9.5" y="10" width="13" height="9" fill="#4a6a9a" stroke="#37517a"/>' +
+    '<rect x="11" y="11.4" width="2.2" height="1.8" fill="#22355c"/><rect x="11" y="14.6" width="2.2" height="1.8" fill="#22355c"/><rect x="11" y="17.8" width="2.2" height="1.8" fill="#22355c"/>' +
+    '<circle cx="21" cy="22" r="7.2" fill="#f28000" stroke="#a85400"/>' +
+    '<polygon points="18.6,18.4 25,22 18.6,25.6" fill="#fff"/>'),
   heart:         CDN.shiz + 'windowsIcons/heart.png',
   earth:         CDN.shiz + 'windowsIcons/earth.png',
   userTile:      CDN.shiz + 'windowsIcons/user.png',

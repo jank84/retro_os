@@ -482,8 +482,9 @@ const Shell = {
           }
           case 'ipconfig': print('\r\nWindows IP Configuration\r\n\r\nEthernet adapter Local Area Connection:\r\n\r\n   Connection-specific DNS Suffix  . : home.net\r\n   IP Address. . . . . . . . . . . . . : 192.168.1.23\r\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\r\n   Default Gateway . . . . . . . . . : 192.168.1.1\r\n'); break;
           case 'start': {
+            if (/^(https?:\/\/|www\.)/i.test(argL)) { WM.openWeb(arg); break; }
             const app = argL.replace(/\.exe$/, '');
-            if (['notepad','mspaint','calc','winmine','iexplore','wmplayer','explorer'].includes(app)) WM.run(arg);
+            if (['notepad','mspaint','calc','winmine','iexplore','wmplayer','explorer','firefox','ff','winamp','teamspeak','ts2'].includes(app)) WM.run(arg);
             else print('Windows cannot find \'' + arg + '\'.');
             break;
           }
@@ -559,7 +560,7 @@ const Shell = {
         { label: '<u>H</u>elp', items: () => [{ label: 'About Internet Explorer', action: () => WM.msg('About Internet Explorer', 'Microsoft (R) Internet Explorer\nVersion 6.0.2900.2180 (XP SP2)\nCryptography Strong', { type: 'info' }) }] }
       ]);
 
-      const SITES = buildSites();
+      const SITES = buildSites(u => go(u), () => addrIn.value, t => win.setTitle(t + ' - Microsoft Internet Explorer'));
       let hist = [], hIdx = -1;
 
       function norm(u) {
@@ -633,8 +634,16 @@ const Shell = {
 
       go(startUrl && /^https?:|^www\.|^[a-z0-9.-]+\.[a-z]{2}/i.test(startUrl) ? startUrl : 'http://www.msn.com');
       return win;
+    }
+  };
 
-      function buildSites() {
+  /* ================================================================
+     SHARED FAKE-WEB REGISTRY — buildSites(nav, curUrl, setPageTitle)
+     nav(url) navigates the calling browser window; curUrl() returns the
+     address that is currently shown; setPageTitle(t) sets the document
+     title. Used by Internet Explorer AND Firefox (APPS.buildSites).
+  ================================================================ */
+  function buildSites(nav, curUrl, setPageTitle) {
         const ava = AVA;
         const S = {};
         S['msn.com'] = { title: 'MSN.com: Hotmail, Messenger, News, Sports, Entertainment, ...', html: `
@@ -813,7 +822,7 @@ const Shell = {
           '<div class="yt-vt" data-go="http://www.youtube.com/watch?v=' + v[0] + '">' + v[1] + '</div><div class="yt-vi">' + v[2] + ' \u2014 ' + v[3] + ' views</div></div>';
         const ytHead = '<div class="yt-bar"><span>' + '<span class="yt-logo">You<span class="tube">Tube</span><em>beta</em></span> <span class="yt-slogan">Broadcast Yourself\u2122</span></span>' +
           '<form data-custom class="yt-form"><input class="yt-input" placeholder="Search Videos..." maxlength="60"><button type="submit">Search</button></form></div>';
-        const ytBindSearch = pg => { const f = pg.querySelector('form.yt-form'); if (f) f.addEventListener('submit', e => { e.preventDefault(); go('http://www.youtube.com/results?search_tags=' + encodeURIComponent(f.querySelector('input').value || 'hamster dance')); }); };
+        const ytBindSearch = pg => { const f = pg.querySelector('form.yt-form'); if (f) f.addEventListener('submit', e => { e.preventDefault(); nav('http://www.youtube.com/results?search_tags=' + encodeURIComponent(f.querySelector('input').value || 'hamster dance')); }); };
         const ytFoot = '<div class="yt-foot">&copy;2005 YouTube&trade;, Inc. \u2014 videos are powered by Macromedia&reg; Flash&trade; Player 6. Don\'t have Flash? Enjoy the thumbnails. | About | Press | Terms</div>';
         S['youtube.com'] = { title: 'YouTube - Broadcast Yourself.', html: `
           <div class="yt-wrap">${ytHead}
@@ -834,7 +843,7 @@ const Shell = {
             </div>${ytFoot}
           </div>`, after: pg => {
             ytBindSearch(pg);
-            const q = (addrIn.value.match(/search_tags=([^&]*)/) || [])[1];
+            const q = (curUrl().match(/search_tags=([^&]*)/) || [])[1];
             if (q) pg.querySelector('#yt-q').textContent = decodeURIComponent(q.replace(/\+/g, ' ')).toLowerCase();
           } };
         S['youtube.com/watch'] = { title: 'YouTube - Evolution of Dance', html: `
@@ -858,11 +867,11 @@ const Shell = {
             </div></div>${ytFoot}
           </div>`, after: pg => {
             ytBindSearch(pg);
-            const id = ((addrIn.value.match(/[?&]v=([^&]*)/) || [])[1] || 'dance').toLowerCase();
+            const id = ((curUrl().match(/[?&]v=([^&]*)/) || [])[1] || 'dance').toLowerCase();
             const v = YT.find(x => x[0] === id) || YT[0];
             pg.querySelector('#yt-wt').textContent = v[1];
             pg.querySelector('#yt-wv').textContent = '\u2014 ' + v[3] + ' views';
-            win.setTitle('YouTube - ' + v[1]);
+            setPageTitle('YouTube - ' + v[1]);
             const more = pg.querySelector('#yt-more');
             more.innerHTML = YT.filter(x => x[0] !== v[0]).slice(0, 4).map(ytThumb).join('');
             more.style.gridTemplateColumns = 'repeat(4,1fr)';
@@ -889,7 +898,7 @@ const Shell = {
             Powered by UseModWiki 0.92 \u00b2 \u00b7 This page has been accessed <b>23</b> times.</div>
           </div>`;
         const wikiBind = pg => { const f = pg.querySelector('form.wiki-form'); if (f) f.addEventListener('submit', e => { e.preventDefault(); const q = f.querySelector('input').value.toLowerCase();
-          go(/counter|strike|halflife/.test(q) ? 'http://www.wikipedia.org/wiki/Counter-Strike' : 'http://www.wikipedia.org/wiki/Windows_XP'); }); };
+          nav(/counter|strike|halflife/.test(q) ? 'http://www.wikipedia.org/wiki/Counter-Strike' : 'http://www.wikipedia.org/wiki/Windows_XP'); }); };
         S['wikipedia.org'] = { title: 'Wikipedia, the free encyclopedia', html: wikiPage('Main Page', `
           <h1 class="wiki-h1">Wikipedia</h1>
           <p>Welcome to <b>Wikipedia</b>, the free encyclopedia that <i>anyone</i> can edit. We currently have <b>19,734</b> articles in English.</p>
@@ -1022,10 +1031,9 @@ const Shell = {
               if (party) Sound.play('chord', { vol: .55 });
             });
           } };
-        return S;
-      }
-    }
-  };
+    return S;
+  }
+  APPS.buildSites = buildSites;
 
   /* ================================================================
      WINDOWS MEDIA PLAYER
@@ -1041,7 +1049,7 @@ const Shell = {
     { t: 'Drown You Out', a: 'EVALS', len: 204 }
   ];
   APPS.wmp = {
-    launch() {
+    launch(file) {
       const body = el('div');
       body.style.cssText = 'height:100%;display:flex;flex-direction:column;background:#1d2f5a;color:#cfd8ee;font-family:Tahoma;';
       body.innerHTML = `
@@ -1050,9 +1058,12 @@ const Shell = {
         </div>
         <div style="flex:1;display:flex;min-height:0;">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:radial-gradient(circle at 50% 30%, #2b4680, #101a36);">
-            <canvas id="wmp-viz" width="300" height="120" style="width:300px;height:120px;"></canvas>
+            <div style="width:300px;height:120px;display:flex;align-items:center;justify-content:center;background:#000;">
+              <canvas id="wmp-viz" width="300" height="120" style="width:300px;height:120px;"></canvas>
+              <video id="wmp-video" playsinline style="display:none;width:100%;height:100%;object-fit:contain;background:#000;"></video>
+            </div>
             <div id="wmp-title" style="font-size:13px;color:#fff;text-align:center;">Select a song to play</div>
-            <div style="width:90%;height:8px;border:1px solid #6f89b8;background:#0a142b;position:relative;" id="wmp-seek"><div id="wmp-prog" style="height:100%;width:0%;background:linear-gradient(90deg,#3ba3e6,#8fd0ff);"></div></div>
+            <div style="width:90%;height:8px;border:1px solid #6f89b8;background:#0a142b;position:relative;cursor:pointer;" id="wmp-seek"><div id="wmp-prog" style="height:100%;width:0%;background:linear-gradient(90deg,#3ba3e6,#8fd0ff);"></div></div>
             <div style="display:flex;gap:10px;font-size:10px;justify-content:space-between;width:90%;color:#9fb4dc;">
               <span id="wmp-t0">0:00</span><span id="wmp-rate">128kbps</span><span id="wmp-t1">0:00</span>
             </div>
@@ -1065,70 +1076,160 @@ const Shell = {
             </div>
           </div>
           <div style="width:230px;background:#16234a;border-left:1px solid #0a1633;display:flex;flex-direction:column;">
-            <div style="padding:6px 8px;font-size:10px;color:#9fb4dc;border-bottom:1px solid #0a1633;">Now Playing — <i>My Playlist (8)</i></div>
+            <div style="padding:6px 8px;font-size:10px;color:#9fb4dc;border-bottom:1px solid #0a1633;">Now Playing — <i id="wmp-count">My Playlist (8)</i></div>
             <div id="wmp-list" style="flex:1;overflow:auto;font-size:11px;"></div>
           </div>
         </div>`;
       const win = WM.openWindow({ title: 'Windows Media Player', icon: ICON.wmp, app: 'wmp', width: 700, height: 500, body });
       const list = body.querySelector('#wmp-list');
-      let cur = -1, playing = false, pos = 0, raf = null, t0 = null;
-      WMP_TRACKS.forEach((tr, i) => {
-        const r = el('div');
-        r.style.cssText = 'padding:4px 8px;cursor:pointer;display:flex;justify-content:space-between;gap:6px;';
-        r.innerHTML = '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (i + 1) + '. ' + tr.t + ' <span style="color:#7f93bd;">— ' + tr.a + '</span></span><span style="opacity:.6;">' + fmt(tr.len) + '</span>';
-        r.addEventListener('click', () => { play(i); });
-        r.addEventListener('mouseenter', () => r.style.background = '#24407c');
-        r.addEventListener('mouseleave', () => r.style.background = cur === i && playing ? '#0e5aa8' : '');
-        list.append(r);
-      });
-      function fmt(s) { return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
+      const vid = body.querySelector('#wmp-video'), cv = body.querySelector('#wmp-viz');
+      let cur = -1, playing = false, pos = 0, raf = null, t0 = null, audio = null;
+      const tracks = WMP_TRACKS.slice();
+      const srcOf = tr => tr.src || Media.srcFor(tr.t);
+      const isVid = tr => tr.video || /\.(mp4|webm|mov|m4v)(\?|$)/i.test(srcOf(tr) || '');
+      /* opened from the desktop ("Star Wars Kid.avi") or File > Open */
+      if (file && (file.src || Media.srcFor(file.name || ''))) {
+        tracks.unshift({ t: file.name || 'Media file', a: file.kind === 'video' ? 'My Videos' : 'My Music',
+          len: 0, src: file.src || Media.srcFor(file.name), video: file.kind === 'video' });
+      }
+      function fmt(s) { return Math.floor((s || 0) / 60) + ':' + String(Math.floor((s || 0) % 60)).padStart(2, '0'); }
+      function lenOf(tr) {
+        if (audio && audio.duration) return audio.duration;
+        if (vid.src && vid.duration) return vid.duration;
+        return tr.len || 0;
+      }
+      function drawList() {
+        list.innerHTML = '';
+        body.querySelector('#wmp-count').textContent = 'My Playlist (' + tracks.length + ')';
+        tracks.forEach((tr, i) => {
+          const r = el('div');
+          r.style.cssText = 'padding:4px 8px;cursor:pointer;display:flex;justify-content:space-between;gap:6px;';
+          r.innerHTML = '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (i + 1) + '. ' + tr.t +
+            (srcOf(tr) ? ' \u25CF' : '') + ' <span style="color:#7f93bd;">— ' + tr.a + '</span></span><span style="opacity:.6;">' + fmt(tr.len) + '</span>';
+          r.title = tr.t + (srcOf(tr) ? '  — media file' : '  — simulated (add a src in js/config.js)');
+          r.addEventListener('click', () => { play(i); });
+          r.addEventListener('mouseenter', () => r.style.background = '#24407c');
+          r.addEventListener('mouseleave', () => r.style.background = cur === i && playing ? '#0e5aa8' : '');
+          list.append(r);
+        });
+      }
+      function stopMedia() {
+        if (audio) { audio.onended = null; audio.pause(); audio = null; }
+        vid.pause(); vid.removeAttribute('src'); vid.load();
+        cv.style.display = ''; vid.style.display = 'none';
+      }
       function play(i) {
-        cur = i; pos = 0; playing = true; t0 = null;
-        const tr = WMP_TRACKS[i];
-        [...list.children].forEach((c, k) => c.style.background = k === i ? '#0e5aa8' : '');
-        body.querySelector('#wmp-title').textContent = 'Now playing: ' + tr.a + ' — ' + tr.t;
+        stopMedia();
+        cur = ((i % tracks.length) + tracks.length) % tracks.length; pos = 0; playing = true; t0 = null;
+        const tr = tracks[cur], src = srcOf(tr);
+        [...list.children].forEach((c, k) => c.style.background = k === cur ? '#0e5aa8' : '');
+        body.querySelector('#wmp-title').textContent = 'Now playing: ' + (tr.a ? tr.a + ' — ' : '') + tr.t;
+        body.querySelector('#wmp-rate').textContent = src ? (isVid(tr) ? 'video' : 'MP3') : '128kbps';
         win.setTitle(tr.t + ' - Windows Media Player');
         Sound.play('nav', { vol: .3 });
+        if (src && isVid(tr)) {
+          cv.style.display = 'none'; vid.style.display = 'block';
+          vid.src = src;
+          const p = vid.play();
+          if (p) p.catch(() => { vid.muted = true; vid.play().catch(() => {}); });
+        } else if (src) {
+          audio = new Audio(src);
+          audio.onended = () => play((cur + 1) % tracks.length);
+          audio.onerror = () => { WM.msg('Windows Media Player', 'Windows Media Player cannot play the file. The file "' + tr.t + '" could not be found — check the path in js/config.js (RETRO.media.sources).', { type: 'error', width: 440 }); stopAll(); };
+          audio.play().catch(() => {});
+        }
         loop();
       }
       function loop() {
         cancelAnimationFrame(raf);
-        const cv = body.querySelector('#wmp-viz'), cx = cv.getContext('2d');
+        const cx = cv.getContext('2d');
         const bars = 32, vals = Array.from({ length: bars }, () => Math.random());
         const tick = ts => {
-          if (!playing) return;
-          if (t0 == null) t0 = ts - pos * 1000;
-          pos = Math.min(WMP_TRACKS[cur].len, (ts - t0) / 1000);
-          body.querySelector('#wmp-prog').style.width = (pos / WMP_TRACKS[cur].len * 100) + '%';
-          body.querySelector('#wmp-t0').textContent = fmt(pos);
-          body.querySelector('#wmp-t1').textContent = '-' + fmt(WMP_TRACKS[cur].len - pos);
-          cx.clearRect(0, 0, 300, 120);
-          for (let i = 0; i < bars; i++) {
-            vals[i] += (Math.random() - .5) * .35; vals[i] = Math.max(.05, Math.min(1, vals[i]));
-            const h = vals[i] * 110, w = 300 / bars - 2;
-            const g = cx.createLinearGradient(0, 120 - h, 0, 120);
-            g.addColorStop(0, '#8fd0ff'); g.addColorStop(.5, '#3ba3e6'); g.addColorStop(1, '#0e5aa8');
-            cx.fillStyle = g; cx.fillRect(i * (300 / bars), 120 - h, w, h);
-          }
-          if (pos >= WMP_TRACKS[cur].len) { play((cur + 1) % WMP_TRACKS.length); return; }
           raf = requestAnimationFrame(tick);
+          if (!playing) return;
+          const tr = tracks[cur], len = lenOf(tr);
+          if (audio) pos = audio.currentTime;
+          else if (vid.src && !vid.paused) pos = vid.currentTime;
+          else { if (t0 == null) t0 = ts - pos * 1000; pos = (ts - t0) / 1000; }
+          body.querySelector('#wmp-prog').style.width = (len ? Math.min(100, pos / len * 100) : 0) + '%';
+          body.querySelector('#wmp-t0').textContent = fmt(pos);
+          body.querySelector('#wmp-t1').textContent = '-' + fmt(Math.max(0, len - pos));
+          if (!vid.src) {
+            cx.clearRect(0, 0, 300, 120);
+            for (let i = 0; i < bars; i++) {
+              vals[i] += (Math.random() - .5) * .35; vals[i] = Math.max(.05, Math.min(1, vals[i]));
+              const h = vals[i] * 110, w = 300 / bars - 2;
+              const g = cx.createLinearGradient(0, 120 - h, 0, 120);
+              g.addColorStop(0, '#8fd0ff'); g.addColorStop(.5, '#3ba3e6'); g.addColorStop(1, '#0e5aa8');
+              cx.fillStyle = g; cx.fillRect(i * (300 / bars), 120 - h, w, h);
+            }
+          }
+          if (len && pos >= len - .35 && !(audio || vid.src)) { play((cur + 1) % tracks.length); }
         };
         raf = requestAnimationFrame(tick);
       }
-      body.querySelector('#wmp-transport').addEventListener('click', e => {
-        const b = e.target.closest('.wmp-b'); if (!b) return;
-        const act = b.dataset.act;
-        if (act === 'play' && cur >= 0) { playing = true; loop(); }
-        else if (act === 'play') play(0);
-        else if (act === 'pause') { playing = false; t0 = null; }
-        else if (act === 'stop') { playing = false; pos = 0; body.querySelector('#wmp-prog').style.width = '0%'; body.querySelector('#wmp-title').textContent = 'Player stopped'; cancelAnimationFrame(raf); }
-        else if (act === 'next') play((cur + 1) % WMP_TRACKS.length);
-        else if (act === 'prev') play((cur + WMP_TRACKS.length - 1) % WMP_TRACKS.length);
+      vid.addEventListener('ended', () => play((cur + 1) % tracks.length));
+      function stopAll() {
+        playing = false; pos = 0; t0 = null; stopMedia();
+        body.querySelector('#wmp-prog').style.width = '0%';
+        body.querySelector('#wmp-title').textContent = 'Player stopped';
+        cancelAnimationFrame(raf);
+        win.setTitle('Windows Media Player');
+      }
+      body.querySelector('#wmp-seek').addEventListener('click', e => {
+        const tr = tracks[cur]; if (!tr) return;
+        const len = lenOf(tr); if (!len) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        const to = (e.clientX - r.left) / r.width * len;
+        pos = to; t0 = null;
+        if (audio) audio.currentTime = to; else if (vid.src) vid.currentTime = to;
       });
+      function actIt(act) {
+        if (act === 'play') { if (cur < 0) { play(0); return; }
+          playing = true; if (audio) audio.play().catch(() => {}); if (vid.src) vid.play().catch(() => {}); loop(); }
+        else if (act === 'pause') { playing = false; t0 = null; if (audio) audio.pause(); if (vid.src) vid.pause(); }
+        else if (act === 'stop') stopAll();
+        else if (act === 'next') play(cur + 1);
+        else if (act === 'prev') play(cur - 1);
+      }
+      body.querySelector('#wmp-transport').addEventListener('click', e => {
+        const b = e.target.closest('.wmp-b'); if (!b) return; actIt(b.dataset.act);
+      });
+      function openMedia(name, src, video) {
+        tracks.unshift({ t: name.replace(/\.[^.]+$/, ''), a: video ? 'My Videos' : 'My Music', len: 0, src, video });
+        drawList(); play(0);
+        WM.balloon('Windows Media Player', (video ? 'Video' : 'File') + ' ' + name + ' opened.', ICON.wmp9);
+      }
+      WM.setMenu(win, [
+        { label: '<u>F</u>ile', items: () => [
+          { label: 'Open\u2026', action: () => Media.pickFile('audio/*,video/*', (url, name) =>
+            openMedia(name, url, /\.(mp4|webm|mov|m4v|avi)$/i.test(name))) },
+          { label: 'Open Media URL\u2026', action: () => {
+            const inp = el('input', 'xp-input'); inp.value = 'http://'; inp.style.cssText = 'width:100%;margin-top:6px;';
+            const t = el('div'); t.style.cssText = 'flex:1;'; t.append('URL of MP3 or video file:', inp);
+            WM.dialog({ title: 'Open URL', icon: ICON.wmp9, width: 440, height: 'auto', text: t,
+              buttons: [{ label: 'OK', value: 'ok', def: true }, { label: 'Cancel', value: null }] })
+              .then(r => { const u = (inp.value || '').trim();
+                if (r === 'ok' && u && u !== 'http://') openMedia(u.replace(/^.*\//, '').replace(/\?.*$/, '') || 'URL media', u, /\.(mp4|webm|mov|m4v|avi)$/i.test(u)); });
+          } }, '-',
+          { label: 'Exit', action: () => win.close() } ] },
+        { label: '<u>P</u>lay', items: () => [
+          { label: playing ? 'Pause' : 'Play', action: () => actIt('play') },
+          { label: 'Stop', action: () => actIt('stop') }, '-',
+          { label: 'Next', action: () => actIt('next') },
+          { label: 'Previous', action: () => actIt('prev') } ] },
+        { label: '<u>V</u>iew', items: () => [
+          { label: 'Full Mode', action: () => WM.msg('Full Mode', 'To exit full mode, press Alt+Enter.\n\nAlt+Enter is currently being used by Winamp. Try again in 2007.', { type: 'error' }) } ] },
+        { label: '<u>H</u>elp', items: () => [
+          { label: 'About Windows Media Player', action: () => WM.msg('About Windows Media Player',
+            'Windows Media\nVersion 9.00.00.2980\n\nNow playing: ' + (cur >= 0 ? tracks[cur].t : 'nothing') +
+            '\n\nReal playback: files listed in js/config.js (RETRO.media.sources)\nand anything opened with File \u2192 Open\u2026 play for real.', { type: 'info', width: 420 }) } ] }
+      ]);
       const st = document.createElement('style');
       st.textContent = '.wmp-b{width:34px;height:30px;border-radius:4px;border:1px solid #6f89b8;background:linear-gradient(180deg,#33518f,#1a2c55);color:#cfe3ff;font-size:12px;cursor:pointer;}.wmp-b:hover{filter:brightness(1.3);}';
       body.append(st);
-      win.onClose = () => { playing = false; cancelAnimationFrame(raf); win.setTitle('Windows Media Player'); };
+      win.onClose = () => { playing = false; stopMedia(); cancelAnimationFrame(raf); win.setTitle('Windows Media Player'); };
+      drawList();
       play(0); playing = false; /* start paused for politeness */
       return win;
     }
@@ -1242,12 +1343,15 @@ const Shell = {
           files.append(
             fileRow('My Pictures', ICON.myPictures, () => APPS['explorer-pictures'].launch()),
             fileRow('My Music', ICON.myMusic, () => APPS.wmp.launch()),
-            fileRow('My Videos', ICON.myMusic, () => WM.msg('My Videos', 'No video files. You watched everything already.', { type: 'info' })),
+            fileRow('My Videos', ICON.myMusic, () => explorerWindow({ title: 'My Videos', icon: ICON.myMusic, app: 'explorer-movies', width: 560, height: 320, count: 1, addrIcon: ICON.myMusic,
+              render(files) {
+                files.append(fileRow('Star Wars Kid.avi', ICON.avi, () => APPS.wmp.launch({ name: 'Star Wars Kid.avi', kind: 'video' })));
+              } })),
             fileRow('resume.doc', ICON.doc, () => WM.msg('resume.doc', 'Windows cannot open this file.\n\nTo open this file, you need Microsoft Word, which is not installed. (Try Paint!)', { type: 'error', width: 420 })),
             fileRow('homework final FINAL v3.doc', ICON.doc, () => WM.msg('Save As', 'This file is locked by another user: "Administrator". Try again in 1999.', { type: 'error' })),
             fileRow('readme.txt', ICON.txt, () => APPS.notepad.launch({ name: 'readme.txt' })),
             fileRow('secret.txt', ICON.txt, () => APPS.notepad.launch({ name: 'secret.txt' })),
-            fileRow('hamsterdance.htm', ICON.html, () => APPS.iexplore.launch('http://www.google.com/search?q=hamster+dance'))
+            fileRow('hamsterdance.htm', ICON.html, () => WM.openWeb('http://www.google.com/search?q=hamster+dance'))
           );
         }
       });
@@ -1447,7 +1551,7 @@ const Shell = {
             ['readme.txt', ICON.txt, () => APPS.notepad.launch({ name: 'readme.txt' })],
             ['secret.txt', ICON.txt, () => APPS.notepad.launch({ name: 'secret.txt' })],
             ['My Summer Trip 001.jpg', ICON.myPictures, () => APPS['explorer-pictures'].launch()],
-            ['hamsterdance.htm', ICON.html, () => APPS.iexplore.launch('http://www.google.com/search?q=hamster+dance')]];
+            ['hamsterdance.htm', ICON.html, () => WM.openWeb('http://www.google.com/search?q=hamster+dance')]];
           const h = el('div'); h.style.cssText = 'color:#444;margin-bottom:8px;'; h.textContent = '48 files found  (Showing top ' + found.length + ')';
           res.append(h);
           found.forEach(([n, i, fn]) => res.append(fileRow(n, i, fn)));
@@ -1594,5 +1698,5 @@ const Shell = {
   APPS.explorer = { launch: () => APPS['explorer-mycomputer'].launch() };
   APPS.wmp._open = false;
   const _wmpLaunch = APPS.wmp.launch;
-  APPS.wmp.launch = function () { APPS.wmp._open = true; const w = _wmpLaunch(); const oc = w.onClose; w.onClose = () => { APPS.wmp._open = false; if (oc) oc(); }; return w; };
+  APPS.wmp.launch = function (file) { APPS.wmp._open = true; const w = _wmpLaunch(file); const oc = w.onClose; w.onClose = () => { APPS.wmp._open = false; if (oc) oc(); }; return w; };
 })();

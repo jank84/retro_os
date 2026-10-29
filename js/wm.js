@@ -465,6 +465,9 @@ const WM = (() => {
       starcraft: 'starcraft', sc: 'starcraft', broodwar: 'starcraft', battleline: 'starcraft',
       ta: 'ta', 'total-annihilation': 'ta', cnc: 'cnc', conquer: 'cnc', 'c&c': 'cnc',
       wow: 'wow', 'world-of-warcraft': 'wow',
+      winamp: 'winamp', winamp2: 'winamp',
+      teamspeak: 'teamspeak', ts2: 'teamspeak', teamspeak2: 'teamspeak',
+      firefox: 'firefox', ff: 'firefox', firebird: 'firefox',
       'logoff': '__logoff', 'chkdsk': '__chkdsk', 'format': '__format', 'fdisk': '__fdisk'
     };
     if (cmd === 'shutdown') {
@@ -482,11 +485,20 @@ const WM = (() => {
     if (id === 'iexplore') return launch('iexplore', arg || undefined);
     if (id === 'control') return launch('control');
     if (id && APPS[id]) return launch(id);
-    if (/^https?:\/\//.test(cmdline) || /\./.test(cmd) && !cmd.includes(' ')) return launch('iexplore', cmdline);
+    if (/^https?:\/\//.test(cmdline) || /\./.test(cmd) && !cmd.includes(' ')) return openWeb(cmdline);
     Sound.play('error');
     msg('Run', 'Windows cannot find \'' + cmdline + '\'. Make sure you typed the name correctly, and then try again. To search for a file, click the Start button, and then click Search.',
       { type: 'error', width: 420 });
   }
+
+  /* -------------------------------------------------- default browser
+     config.js RETRO.browser.default picks which app owns "the web":
+     URLs from Run, cmd start, desktop links etc. all end up here. */
+  function defaultBrowser() {
+    const d = (window.RETRO && RETRO.browser && RETRO.browser.default) || 'firefox';
+    return APPS[d] ? d : 'iexplore';
+  }
+  function openWeb(url) { return launch(defaultBrowser(), url || undefined); }
 
   /* -------------------------------------------------- launch */
   function launch(name, arg) {
@@ -537,7 +549,7 @@ const WM = (() => {
     contextMenu, closeAllMenus, addTray, smItem,
     toggleStartMenu, closeStartMenu,
     el, iconImg, desktopRect,
-    focusWin,
+    focusWin, openWeb, defaultBrowser,
     get wins() { return wins.slice(); },
     get active() { return activeWin; },
     setMenu(win, def) {

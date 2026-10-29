@@ -17,5 +17,25 @@ window.RETRO = {
        false = the full game-window simulations open.
        Minesweeper and the Steam client itself always work. */
     requireCd: true
+  },
+  browser: {
+    /* Which browser "the web" opens with: 'firefox' or 'iexplore'.
+       Affects the Start menu, quick launch, Run-dialog URLs, cmd `start`,
+       desktop links and every in-app "open in browser" link. */
+    default: 'firefox'
+  },
+  media: {
+    /* Real playback for Winamp and Windows Media Player.
+       Key   = (part of a) track title, matched case-insensitively.
+       Value = audio/video file in assets/media/ or any direct mp3/mp4 URL.
+       Tracks without a source stay simulated (LED timer + visualizer).
+
+         'In The End': 'assets/media/in_the_end.mp3',
+         'under the bridge': 'https://example.com/track.mp3',
+
+       The desktop file "Star Wars Kid.avi" plays through this: */
+    sources: {
+      'star wars kid': 'assets/media/star_wars_kid.mp4'
+    }
   }
 };

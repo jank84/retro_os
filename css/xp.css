@@ -288,7 +288,8 @@ img { -webkit-user-drag: none; }
   background: linear-gradient(180deg, #19b3ee 0%, #0e8de4 8%, #0d83e0 50%, #118ae6 90%, #0f58c3 100%);
   border-left: 1px solid #0a2f9e; box-shadow: inset 1px 0 0 #7cc3f7;
 }
-.tray-ico { position: relative; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+#tray-icons { display: flex; align-items: center; gap: 6px; }
+.tray-ico { position: relative; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; flex: 0 0 18px; }
 .tray-ico img { width: 16px; height: 16px; }
 .tray-ico .badge {
   position: absolute; top: -5px; right: -6px; background: #fff; color: #c00;
