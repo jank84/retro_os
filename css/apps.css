@@ -491,5 +491,5 @@ h3.wiki-h1 { font-size: 16px; }
   pointer-events: auto;
   animation: nocd-fade .3s ease-out;
 }
-.nocd-splash img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.nocd-splash img { width: 100%; height: 100%; object-fit: cover; }
 @keyframes nocd-fade { from { opacity: 0; } to { opacity: 1; } }
