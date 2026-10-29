@@ -66,6 +66,15 @@ const Gameware = (() => {
     const win = WM.openWindow({ title: 'World of Warcraft', icon: ICON.wow, app: 'wow',
       width: w, height: h, x: Math.round((d.width - w) / 2), y: Math.round((d.height - h) / 2),
       cls: 'wow-video-win', body });
+    /* shrink the height (and width, if the desktop is too short) so the window
+       body is exactly 16:9 — the video then fits the window without being cut */
+    const fx = win.el.offsetWidth - win.body.clientWidth;   /* side borders */
+    const fy = win.el.offsetHeight - win.body.clientHeight; /* title bar + borders */
+    const bw = Math.min(win.body.clientWidth, Math.round((d.height - fy - 12) * 16 / 9));
+    win.el.style.width = (bw + fx) + 'px';
+    win.el.style.height = (Math.round(bw * 9 / 16) + fy) + 'px';
+    win.el.style.left = Math.round((d.width - win.el.offsetWidth) / 2) + 'px';
+    win.el.style.top = Math.round((d.height - win.el.offsetHeight) / 2) + 'px';
     let pos = 9124782;
     const render = () => { bNum.textContent = pos.toLocaleString('en-US') + '.'; };
     render();
