@@ -485,11 +485,10 @@ h3.wiki-h1 { font-size: 16px; }
 
 /* ---- "insert CD" splash screens (js/config.js → games.requireCd) ---- */
 .nocd-splash {
-  position: absolute; top: 25%; left: 25%; width: 50%; height: 50%;
-  display: flex; align-items: center; justify-content: center;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   background: #000; box-shadow: 0 18px 90px rgba(0, 0, 0, .9);
   pointer-events: auto;
   animation: nocd-fade .3s ease-out;
 }
-.nocd-splash img { width: 100%; height: 100%; object-fit: cover; }
+.nocd-splash img { display: block; max-width: 50vw; max-height: 50vh; }
 @keyframes nocd-fade { from { opacity: 0; } to { opacity: 1; } }
