@@ -18,6 +18,12 @@ pairs = [
     #   magick icon.png -alpha set -bordercolor none -border 2 -fuzz 7% -fill none \
     #     -draw 'color 0,0 floodfill' -trim +repage -background none -gravity center \
     #     -extent '%[fx:max(w,h)]x%[fx:max(w,h)]' -resize 128x128 assets/art/starcraft.png
+    # World of Warcraft logo source (white bg removed the same way, no border):
+    #   https://www.clipartkey.com/mpngs/m/272-2728617_wow-logo-vanilla-world-of-warcraft-classic-icon.png
+    #   magick wow.png -alpha set -fuzz 15% -fill none -draw 'color 0,0 floodfill' \
+    #     -fuzz 15% -fill none -draw 'color 899,0 floodfill' ... (4 corners) -trim +repage \
+    #     -background none -gravity center -extent '%[fx:max(w,h)]x%[fx:max(w,h)]' \
+    #     -> resize 128 = assets/art/wow.png ; resize 560 -quality 90 = assets/screens/wow_splash.webp
     # Total Annihilation — real gameplay screenshot (Wikipedia)
     ('https://upload.wikimedia.org/wikipedia/en/9/9a/Total_annihilation_screenie_3.1415926.jpg', 'screens/ta_battle.jpg'),
     # C&C Tiberian Dawn — real mission briefing screens + in-engine splash + original game icon (CNC wiki)

@@ -49,6 +49,7 @@ const Main = (() => {
     { id: 'starcraft', label: 'StarCraft', icon: ICON.starcraft, app: 'starcraft' },
     { id: 'ta', label: 'Total Annihilation', icon: ICON.ta, app: 'ta' },
     { id: 'cnc', label: 'Command & Conquer', icon: ICON.cnc, app: 'cnc' },
+    { id: 'wow', label: 'World of Warcraft', icon: ICON.wow, app: 'wow' },
     { id: 'cmd', label: 'Command Prompt', icon: ICON.cmd, app: 'cmd' },
     { id: 'notepad', label: 'Notepad', icon: ICON.notepad, app: 'notepad' },
     { id: 'paint', label: 'Paint', icon: ICON.paint, app: 'paint' },
@@ -377,7 +378,8 @@ const Main = (() => {
         { label: 'Counter-Strike 1.5', icon: ICON.cs, action: () => WM.launch('cs') },
         { label: 'StarCraft', icon: ICON.starcraft, action: () => WM.launch('starcraft') },
         { label: 'Total Annihilation', icon: ICON.ta, action: () => WM.launch('ta') },
-        { label: 'Command & Conquer', icon: ICON.cnc, action: () => WM.launch('cnc') }
+        { label: 'Command & Conquer', icon: ICON.cnc, action: () => WM.launch('cnc') },
+        { label: 'World of Warcraft', icon: ICON.wow, action: () => WM.launch('wow') }
       ]
     },
     {

@@ -464,6 +464,7 @@ const WM = (() => {
       steam: 'steam', cstrike: 'cs', cs: 'cs', halflife: 'cs', 'hl.exe': 'cs', hl: 'cs',
       starcraft: 'starcraft', sc: 'starcraft', broodwar: 'starcraft', battleline: 'starcraft',
       ta: 'ta', 'total-annihilation': 'ta', cnc: 'cnc', conquer: 'cnc', 'c&c': 'cnc',
+      wow: 'wow', 'world-of-warcraft': 'wow',
       'logoff': '__logoff', 'chkdsk': '__chkdsk', 'format': '__format', 'fdisk': '__fdisk'
     };
     if (cmd === 'shutdown') {

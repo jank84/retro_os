@@ -30,7 +30,7 @@ Or just open `index.html` directly — everything runs from the local files.
 | Session | Log off, Turn Off Computer dialog, standby, shutdown → "It's now safe…" screen, BSOD (try ending `lsass.exe` in Task Manager, or `taskkill lsass.exe` in CMD) |
 | Window manager | Drag, resize, minimize-to-taskbar animation, maximize, taskbar buttons with flash, z-order focus, modal dialogs, context menus, balloons, tray with blink/badge |
 | Start menu | Pinned IE + E-mail, frequent list, All Programs flyout with nested submenus, right column, Log Off / Turn Off footer |
-| Desktop | 18 icons incl. Steam + game shortcuts (original CS/StarCraft/TA/C&C icons & box art), rubber-band selection, drag & snap-to-grid, delete to Recycle Bin (restorable), New → Text Document, right-click menu |
+| Desktop | 19 icons incl. Steam + game shortcuts (original CS/StarCraft/TA/C&C/WoW icons & box art), rubber-band selection, drag & snap-to-grid, delete to Recycle Bin (restorable), New → Text Document, right-click menu |
 | Messengers | MSN 7.5 sign-in progress, buddy list with avatars/statuses/personal messages, chats with typing indicators, keyword auto-replies, **Nudge** (window shakes!), fake ad bar, scripted friends who message you after sign-in; ICQ 2003 float window with UINs, status tree, ICQ # message windows |
 | Apps | Notepad, Paint (flood fill, undo, save PNG), Calculator, Minesweeper (authentic sprites, first-click safe, flags/?), Command Prompt (help/dir/tree/ping/ipconfig/start/taskkill/shutdown…), Internet Explorer 6 (MSN, Google + search, MySpace with Top 8, **YouTube 2005 beta**, **Wikipedia 2001**, **GeoCities** — see Retro web), Windows Media Player (visualizer, 2003 playlist), Explorer windows (My Computer / Documents / Pictures / Recycle Bin), Control Panel, Display Properties (live wallpaper switcher), Date & Time, Search, Help, Run, winver |
 | Retro games | **Steam (2003 client)** with real game banners, tabs (Games/Friends/Servers), status bar — launches the games below. **Counter-Strike 1.5** via the Half-Life menu: create/join game, server browser (de_dust2 forever), console loading sequence, live HUD (killfeed, round timer, HP/ammo, F = flashbang, you will get AWP'd). **StarCraft** with Battle.net logon + chat channel chatter you can reply to, and a campaign that ends badly. **Total Annihilation**: green vector menu, skirmish setup, loading quotes ("The clock is ticking, Commander."), live battle log, DEFEAT. **Command & Conquer**: GDI/Nod side select, typed briefing, sidebar with POWER/UNIT READY/DEPLOY — and a nuclear strike if you linger |
@@ -45,7 +45,7 @@ Plain JS settings file, edit & refresh — no build step.
 | Setting | Default | Effect |
 |---|---|---|
 | `boot.skipToDesktop` | `true` | Start straight at the desktop — skips BIOS POST, the XP boot loader and the welcome screen (Restart / BSOD flows skip too; Log Off still shows the welcome screen). Set `false` for the full boot. |
-| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft shows the game's borderless splash (click to skip) followed by a period-correct "insert CD" error; Total Annihilation and Command & Conquer show the error dialog right away. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
+| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft / World of Warcraft shows the game's borderless splash (click to skip) followed by a period-correct "insert CD" error; Total Annihilation and Command & Conquer show the error dialog right away. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
 
 ## Authentic assets (bundled in `/assets`, works offline)
 
@@ -59,6 +59,7 @@ to refresh). Sources:
 - MSN notification sounds: archive.org (`newemail` item)
 - Bliss wallpaper, MSN logo, StarCraft briefing + TA gameplay screenshots: Wikimedia
 - Steam game banners + original app icons (CS, Half-Life, DoD, TFC): official Steam CDN
+- World of Warcraft vanilla logo emblem (desktop icon + splash): ClipartKey
 - CS 1.5 menu background + original icon: [Counter Strike wiki](https://counterstrike.fandom.com)
 - C&C Tiberian Dawn briefing screens, splash + original icon: [CnC wiki](https://cnc.fandom.com)
 - StarCraft / Total Annihilation box art: [PCGamingWiki](https://www.pcgamingwiki.com)

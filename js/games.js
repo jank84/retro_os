@@ -40,7 +40,9 @@ const Gameware = (() => {
     ta: { title: 'Total Annihilation', icon: ICON.ta,   /* no splash art — straight to the error */
       err: 'Total Annihilation failed to start.\n\nPlease insert Total Annihilation CD 1 of 2 into drive D:.\n\nHave your CD key ready. It is on the inside of the manual, next to where the cat sleeps.' },
     cnc: { title: 'Command & Conquer', icon: ICON.cnc,  /* no splash art — straight to the error */
-      err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' }
+      err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' },
+    wow: { title: 'World of Warcraft', icon: ICON.wow, img: SCREENS.wowSplash,
+      err: 'World of Warcraft could not connect to the logon server.\n\nPlease insert the World of Warcraft CD into drive D:.\n\nYou have been in the queue for 47 minutes.\nCurrent position: 3,812. Do not press Alt+F4.' }
   };
   const noCdWins = {};
   /* returns a truthy value when requireCd is on (splash overlay or direct error),
@@ -121,7 +123,7 @@ APPS.steam = (() => {
         { label: '<u>G</u>ames', items: () => [
           { label: 'Play Counter-Strike 1.5', icon: ICON.cs, action: () => APPS.cs.launch() },
           '-',
-          { label: 'Scan for games...', action: () => WM.msg('Steam', 'Game Scan complete.\n\nFound:\n\u2022 4 Steam games\n\u2022 1 cracked demo of Descent 3\n\u2022 471 files in C:\\ that are "not important"\n\u2022 StarCraft somewhere on a CD-RW labeled "DO NOT FORMAT"', { type: 'info' }) },
+          { label: 'Scan for games...', action: () => WM.msg('Steam', 'Game Scan complete.\n\nFound:\n\u2022 4 Steam games\n\u2022 1 cracked demo of Descent 3\n\u2022 471 files in C:\\ that are "not important"\n\u2022 StarCraft somewhere on a CD-RW labeled "DO NOT FORMAT"\n\u2022 A World of Warcraft retail box (unused, subscription too expensive)', { type: 'info' }) },
           '-',
           { label: 'Exit', action: () => win.close() }
         ]},
@@ -801,6 +803,62 @@ APPS.cnc = (() => {
         Sound.play('error', { vol: .55 });
       }, 2600);
     }, 40000);
+  }
+  return { launch };
+})();
+
+/* ================================================================
+   WORLD OF WARCRAFT — 2004 launcher + login-queue gag
+   (only reachable as a full window when config games.requireCd=false)
+   ================================================================ */
+APPS.wow = (() => {
+  const el = Gameware.el;
+  let win = null;
+
+  function launch() {
+    const s = Gameware.splashOnly('wow'); if (s) return s;
+    if (win && win.el.isConnected) { win.focus(); return win; }
+    const body = el('div');
+    body.className = 'wow-win';
+    win = WM.openWindow({ title: 'World of Warcraft', icon: ICON.wow, app: 'wow', width: 470, height: 410, cls: 'wow-outer', body });
+    menu();
+    return win;
+  }
+
+  function menu() {
+    win.setTitle('World of Warcraft');
+    const b = win.body; b.innerHTML = '';
+    const scr = el('div', 'cs-panel wow-menu');
+    scr.innerHTML = '<img class="wow-logo" src="' + SCREENS.wowSplash + '" data-fb="' + ICON.wow + '" alt="">' +
+      '<div class="sc-sub">Patch 1.12.1 — Drums of War</div>';
+    const btns = el('div', 'cs-btns');
+    const mk = (label, fn) => { const x = el('button', 'cs-btn'); x.textContent = label; x.addEventListener('click', fn); btns.append(x); };
+    mk('Enter Azeroth', () => login());
+    mk('Options', () => WM.msg('Options', 'Graphics: Low (the fan sounds like a 747 either way)\nAddons: 47 installed, 3 updated this decade\nDistance clip: far enough', { type: 'info' }));
+    scr.append(btns); b.append(scr);
+  }
+
+  function login() {
+    const b = win.body; b.innerHTML = '';
+    const T = Gameware.timers(win);
+    const scr = el('div', 'cs-panel');
+    scr.innerHTML = '<h3>Logging in — Durotar (PvP)</h3>';
+    const bar = el('div'); bar.style.cssText = 'width:80%;height:14px;border:1px solid #555;background:#111;margin:6px auto 0';
+    const fill = el('div'); fill.style.cssText = 'height:100%;width:3%;background:#7a5c1e;transition:width 1.2s';
+    bar.append(fill);
+    const pos = el('div', 'sc-sub'); pos.style.marginTop = '10px';
+    scr.append(bar, pos);
+    b.append(scr);
+    let n = 0;
+    T.loop(() => {
+      n++;
+      fill.style.width = Math.min(3 + n * 4, 100) + '%';
+      pos.textContent = 'Queue position: ' + Math.max(4313 - n * 187, 1) + ' of 4,313';
+      if (n === 6) {
+        Sound.play('error');
+        WM.msg('World of Warcraft', 'You have been disconnected from the World of Warcraft logon server.\n\nReason: DB30 — Your product key is already in use.\n\nSomewhere, in another time zone, is another you. And they got to Elwynn first.', { type: 'error', width: 440 });
+      }
+    }, 1400);
   }
   return { launch };
 })();

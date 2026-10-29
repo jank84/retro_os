@@ -483,6 +483,10 @@ h3.wiki-h1 { font-size: 16px; }
 .cnc-shot { width: min(340px, 78%); border: 1px solid #3a3010; box-shadow: 0 0 18px rgba(0,0,0,.6); margin-bottom: 4px; }
 .cnc-brief-img { display: block; width: 100%; max-height: 132px; object-fit: cover; border: 1px solid #4a3c00; margin-bottom: 10px; }
 
+/* ---- World of Warcraft launcher (full window, config requireCd=false) ---- */
+.wow-outer .xp-body { background: #0b0f14; }
+.wow-menu .wow-logo { display: block; width: min(230px, 58%); margin: 4px auto 10px; }
+
 /* ---- "insert CD" splash screens (js/config.js → games.requireCd) ---- */
 .nocd-splash {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
