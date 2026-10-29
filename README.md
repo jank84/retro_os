@@ -60,7 +60,7 @@ to refresh). Sources:
 - Bliss wallpaper, MSN logo, StarCraft briefing + TA gameplay screenshots: Wikimedia
 - Steam game banners + original app icons (CS, Half-Life, DoD, TFC): official Steam CDN
 - World of Warcraft vanilla logo emblem (desktop icon + splash): ClipartKey
-- World of Warcraft login-screen video loop (`assets/screens/wow_login.mp4`, 12 s cut with audio via ffmpeg): archive.org item `world-of-warcraft-login-screen`; queue dialog look referenced from a classic vanilla error screenshot
+- World of Warcraft login-screen video loop (`assets/screens/wow_login.mp4`, seamless 20 s loop with audio, hand-looped from the archive.org item `world-of-warcraft-login-screen`); queue dialog look referenced from a classic vanilla error screenshot
 - CS 1.5 menu background + original icon: [Counter Strike wiki](https://counterstrike.fandom.com)
 - C&C Tiberian Dawn briefing screens, splash + original icon: [CnC wiki](https://cnc.fandom.com)
 - StarCraft / Total Annihilation box art: [PCGamingWiki](https://www.pcgamingwiki.com)
