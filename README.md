@@ -45,7 +45,7 @@ Plain JS settings file, edit & refresh — no build step.
 | Setting | Default | Effect |
 |---|---|---|
 | `boot.skipToDesktop` | `true` | Start straight at the desktop — skips BIOS POST, the XP boot loader and the welcome screen (Restart / BSOD flows skip too; Log Off still shows the welcome screen). Set `false` for the full boot. |
-| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft / Total Annihilation / Command & Conquer only shows the game's borderless half-screen splash, followed by a period-correct "insert CD" error (click the splash to skip). Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
+| `games.requireCd` | `true` | Clicking Counter-Strike / StarCraft shows the game's borderless splash (click to skip) followed by a period-correct "insert CD" error; Total Annihilation and Command & Conquer show the error dialog right away. Set `false` to open the full game-window simulations. Minesweeper and the Steam client always work. |
 
 ## Authentic assets (bundled in `/assets`, works offline)
 

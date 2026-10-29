@@ -37,16 +37,24 @@ const Gameware = (() => {
       err: 'Steam was unable to launch Counter-Strike 1.5.\n\nPlease insert the Counter-Strike CD-ROM into drive D: and click OK.\n\nOr download the 62 MB patch over ISDN.\nEstimated time remaining: long weekend.' },
     starcraft: { title: 'StarCraft', icon: ICON.starcraft, img: SCREENS.scLoading,
       err: 'Battle.net could not start StarCraft.\n\nPlease insert the StarCraft CD into drive D:.\n\nIf a CD is already in the drive, it is the wrong CD. It is always the wrong CD.' },
-    ta: { title: 'Total Annihilation', icon: ICON.ta, img: SCREENS.taBattle,
+    ta: { title: 'Total Annihilation', icon: ICON.ta,   /* no splash art — straight to the error */
       err: 'Total Annihilation failed to start.\n\nPlease insert Total Annihilation CD 1 of 2 into drive D:.\n\nHave your CD key ready. It is on the inside of the manual, next to where the cat sleeps.' },
-    cnc: { title: 'Command & Conquer', icon: ICON.cnc, img: SCREENS.cncSplash,
+    cnc: { title: 'Command & Conquer', icon: ICON.cnc,  /* no splash art — straight to the error */
       err: 'A required .DLL file, VQA.DLL, was not found.\n\nPlease insert the Tiberian Dawn CD into drive D: and restart Windows.\n\n(Yes, restart Windows. It is 1996.)' }
   };
   const noCdWins = {};
-  /* returns the splash overlay when requireCd is on, null when full games are enabled */
+  /* returns a truthy value when requireCd is on (splash overlay or direct error),
+     null when full games are enabled */
   function splashOnly(key) {
     if (!(window.RETRO && RETRO.games && RETRO.games.requireCd)) return null;
     const g = NOCD[key];
+    if (!g.img) {  /* no splash for this game — show the error dialog right away */
+      if (noCdWins[key]) return 'open';
+      noCdWins[key] = true;
+      Sound.play('error');
+      return WM.msg(g.title + ' - CD Required', g.err, { type: 'error', width: 430 })
+        .then(() => { noCdWins[key] = false; });
+    }
     if (noCdWins[key] && noCdWins[key].isConnected) return noCdWins[key];
     const layer = document.getElementById('windows-layer');
     const ov = el('div', 'nocd-splash');
